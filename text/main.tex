@@ -1,0 +1,53 @@
+%% Beginning the document
+\documentclass{article} %Document type
+\usepackage[utf8]{inputenc} %Type of font to use
+
+%% Defining formatting packages
+\usepackage{setspace}
+\usepackage[font={small,it}]{caption}
+\usepackage{indentfirst}
+
+%% Bibliography
+\usepackage{natbib}
+\setcitestyle{square}
+
+%% Math packages
+\usepackage{amsmath}
+\usepackage{empheq}
+
+%% Figures packages
+\usepackage{float}
+\usepackage{graphicx}
+
+%% Drawing packages
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing,patterns}
+
+
+\title{Stochastic Simulation}
+\author{Alexandre Augusto Abreu Almeida}
+\date{December 2019}
+
+\setlength{\parskip}{2mm plus 1mm minus 1mm}
+\onehalfspacing
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+%\input{ch1-Introduction.tex}
+
+\section{Oscillations}
+%\input{ch2-oscillations.tex}
+
+\section{Stochastic Processes}
+%\input{ch3-stochastic_processes.tex}
+
+\section{Harmonic Chain}
+%\input{ch4-harmonic_chain.tex}
+
+\nocite{*}
+\bibliographystyle{siam}
+\bibliography{references}
+\end{document}

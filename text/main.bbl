@@ -1,0 +1,81 @@
+\begin{thebibliography}{10}
+
+\bibitem{bambi}
+{\sc H.~Z. Bambi~Hu, Baowen~Li}, {\em Heat conduction in one-dimensional
+  chains}, Physical Review E, 57 (1998).
+
+\bibitem{baowen}
+{\sc G.~C. Baowen~Li, Lei~Wang}, {\em Thermal diode: Rectification of heat
+  flux}, Physical Review Letters, 93 (2004).
+
+\bibitem{chapranum}
+{\sc S.~C. Chapra}, {\em Métodos Numéricos Aplicados com Matlab para
+  Engenheiros e Cientistas}, AMGH Editora, 3~ed., 2013.
+\newblock (Portuguese translation of the book "Applied Numerical Methods with
+  MATLAB for Engineers and Scientists, 3rd edition" by Steven C. Chapra).
+
+\bibitem{michael}
+{\sc M.~M. Cândido}, {\em Problemas em condutividade térmica em cadeias
+  harmônicas e anarmônicas}, PhD thesis, Pontifícia Universidade Católica
+  do Rio de Janeiro, 2017.
+
+\bibitem{tania}
+{\sc T.~T. M.~J. de~Oliveira}, {\em Dinâmica Estocástica e
+  Irreversibilidade}, edusp, 2~ed., 2014.
+
+\bibitem{giordano}
+{\sc N.~J. Giordano}, {\em Computational Physics}, Prentice Hall, 1~ed., 1997.
+
+\bibitem{hansen}
+{\sc J.~A. Hansen and C.~Penland}, {\em Efficient approximate techniques for
+  integrating stochastic differential equations}, Monthly Weather Review, 134
+  (2006).
+
+\bibitem{honeycutt}
+{\sc R.~L. Honeycutt}, {\em Stochastic runge-kutta algorithms. i. white noise},
+  Physical Review A, 45 (1992).
+
+\bibitem{allentildesley}
+{\sc D.~J.~T. Michael P.~Allen}, {\em Computer Simulation of Liquids}, Oxford
+  University Press, 2~ed., 2017.
+
+\bibitem{smalediff}
+{\sc R.~L.~D. Morris W.~Hirsch, Sephen~Smale}, {\em Differential Equations,
+  Dynamical Systems, and an Introduction to Chaos}, Academic Press, 3~ed.,
+  2013.
+
+\bibitem{ruemelin}
+{\sc Rümelin}, {\em Numerical treatment of stochastic differential equations},
+  Journal on Numerical Analysis, 19 (1982).
+
+\bibitem{salinas}
+{\sc S.~R.~A. Salinas}, {\em Introduction to Statistical Physics},
+  Springer-Verlag, 1~ed., 2001.
+
+\bibitem{oxfordsolid}
+{\sc S.~H. Simon}, {\em The Oxford Solid State Basics}, Oxford University
+  Press, 1~ed., 2017.
+
+\bibitem{lepri}
+{\sc A.~P. Stefano~Lepri, Roberto~Livi}, {\em Heat conduction in chains of
+  nonlinear oscillators}, Physical Review Letters, 78 (1997).
+
+\bibitem{symonmech}
+{\sc K.~R. Symon}, {\em Mechanics}, Addison-Wesley Publishing Company, 3~ed.,
+  1971.
+
+\bibitem{taylormech}
+{\sc J.~R. Taylor}, {\em Mecânica Clássica}, Bookman Editora, 1~ed., 2013.
+\newblock (Portuguese translation of the book "Classical Mechanics" by John R.
+  Taylor).
+
+\bibitem{vanKampen}
+{\sc N.~Van~Kampen}, {\em Stochastic Processes in Physics and Chemistry},
+  Elsevier, 3~ed., 2007.
+
+\bibitem{rieder}
+{\sc E.~L. Z.~Rieder, J. L.~Lebowitz}, {\em Properties of a harmonic crystal in
+  a stationary nonequilibrium state}, Journal of Mathematical Physics, 8
+  (1967).
+
+\end{thebibliography}

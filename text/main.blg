@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: main.aux
+The style file: siam.bst
+Database file #1: references.bib
+I was expecting a `,' or a `}'---line 91 of file references.bib
+ :   
+ :   note={(English translation of the portuguese version)}
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+You've used 18 entries,
+            2030 wiz_defined-function locations,
+            596 strings with 5778 characters,
+and the built_in function-call counts, 3693 in all, are:
+= -- 286
+> -- 132
+< -- 0
++ -- 57
+- -- 38
+* -- 264
+:= -- 663
+add.period$ -- 20
+call.type$ -- 18
+change.case$ -- 72
+chr.to.int$ -- 0
+cite$ -- 18
+duplicate$ -- 217
+empty$ -- 358
+format.name$ -- 38
+if$ -- 729
+int.to.chr$ -- 0
+int.to.str$ -- 18
+missing$ -- 27
+newline$ -- 59
+num.names$ -- 36
+pop$ -- 93
+preamble$ -- 1
+purify$ -- 55
+quote$ -- 0
+skip$ -- 98
+stack$ -- 0
+substring$ -- 91
+swap$ -- 36
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 52
+warning$ -- 0
+while$ -- 36
+width$ -- 20
+write$ -- 161
+(There was 1 error message)
