@@ -1,1 +1,14 @@
-text/img/*.sh
+# Removing Tex and/or PdfTex auxiliary files
+text/*.aux
+text/*.bbl
+text/*.log
+text/*.blg
+text/*.lof
+text/*.lot
+text/*.out
+text/*.synctex.gz
+text/*.toc
+
+# Removing inkscape images auxiliary files
+text/images/*.pdf
+text/images/*.sh
