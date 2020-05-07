@@ -1,0 +1,58 @@
+% -*- coding: utf-8; -*-
+
+\chapter{Introduction}
+
+\begin{enumerate}
+	\item Thermodynamics, Transport Phenomena and Non Equilibrium Thermodynamics (Quantum Thermodynamics?) [Truesdell, Mazur]
+	
+	Importance and Applications, Transport Phenomena x Non Equilibrium Thermodynamics, Achievements [?]
+	
+	\item Statistical Physics [?]
+	
+	\item Interests in non equilibrium physics [McQuarrie, Prigogine]
+	[Fermi-Pasta-Ulam-Tsingou?]
+	
+\end{enumerate}
+
+\section{Heat transport}
+
+\begin{enumerate}
+	\item Fourier Law
+	
+	\item Solids [Ashcroft \& Mermin]
+	
+	\item Problems with linear harmonic chain [Aschroft \& Mermin, Rieder]
+\end{enumerate}
+
+One of the most common ways of thinking about solids is as being composed of many particles bounded together by first neighbors interactions.
+
+This picture is commonly used in undergraduate Solid State Physics books as a toy model consisting of a one dimensional chain of classical particles interacting with their neighbors by quadratic potentials (an harmonic chain) mainly to introduce in its quantum analogue the concept of phonons \cite{simonOxfordSolid2017} and how they affect some of the equilibrium and transport properties of metals and insulators \cite{ashcroftSolidState1976}.
+
+
+Quoting from the book by Ashcroft \& Mermin:
+\begin{quote}
+	"The harmonic approximation is the starting point for all theories of lattice dynamics[...]"
+\end{quote}
+
+\section{Objective}
+
+\begin{enumerate}
+	\item What has been done [Lebowitz, Lepri, Casati, Baowen Li, Celia]
+	
+	\item What we wish to do
+\end{enumerate}
+
+What we wish to do is to try and simulate the Fourier equation in one dimension from first principles, using a microscopic model.
+
+From there, we will then try to simulate a thermal diode.
+
+The simplest model for heat transfer one might think about as a first idea is a linear chain of harmonic oscillators, like the common toy model for lattice vibrations seen in undergraduate physics courses in solid state theory [oxfordsolid], but with two heat baths on each side. However, it is known that this model does reproduce the linear temperature profile in accordance with Fourier's law, giving a flat profile instead [rieder].
+
+Many models have been proposed to try to reproduce this linear profile, most of them consisting of adding anharmonic terms either in the potential of interaction between particles or in an external potential, although there are some that change the dynamics completely.
+
+We shall try to use anharmonic terms to simulate such heat transfer using two stochastic models for the heat baths.
+
+Since the model uses a linear harmonic chain, we will first review numerical methods for solving a simple harmonic oscillator, which will give us insights on their behavior for the couples oscillators. Then, we will review the methods used for simulating heat baths, which in our case will be Langevin heat baths (although in the literature, we can also see cases of Nose-Hoover Thermostats being used for heat baths, see [BaowenLi1] and [Lepri].
+
+After that, we discuss the results for the simulation of harmonic and anharmonic chains.
+

@@ -1,0 +1,242 @@
+%% -*- coding: utf-8; -*-
+
+\documentclass[master,american]{ThesisPUC}
+
+%%
+%%Text and Figure formatting packages
+%%
+
+%% \usepackage[brazilian]{babel}      %% in ThesisPUC.cls
+%% \usepackage[utf8]{inputenc}        %% .
+%% \usepackage[T1]{fontenc}           %% .
+%% \usepackage{lmodern}               %% .
+%% \usepackage[pdftex]{graphicx}	%% .
+
+%\usepackage[framemethod=tikz]{mdframed}
+
+%\usepackage[%
+%dvipsnames,
+%svgnames,
+%x11names,
+%fixpdftex
+%]{xcolor} %Lists of colors to use in the text
+
+\usepackage{float}
+
+%%
+%%Mathematics symbols packages
+%%
+\usepackage{amsmath, esint}
+\usepackage{amssymb}
+\usepackage{empheq}
+
+
+%%
+%% Add inkscape figures with extension .pdf_tex
+%%
+\usepackage{import}
+\usepackage{xifthen}
+\usepackage{pdfpages}
+\usepackage{transparent}
+
+%%
+%% Table packages
+%%
+
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{colortbl}
+\usepackage{booktabs}
+
+
+%%
+%% Miscellaneous
+%%
+
+\usepackage{numprint} %Prints numbers with thousand separator
+\usepackage{textcomp} %Text Companion fonts
+\usepackage{enumitem} %Control layout of itemize & enumerate
+\usepackage[numbers]{natbib} %Organizar numeração da bibliografia
+
+%\usepackage{tikz}
+
+% \usepackage{etoolbox}
+
+%% numprint 
+\npthousandsep{.}
+\npdecimalsign{,}
+
+%% ThesisPUC option
+%% \tablesmode{figtab} %% [nada, fig, tab ou figtab]
+
+%%%
+%%% Counters
+%%%
+
+%% uncomment and change for other depth values
+%% \setcounter{tocdepth}{3}
+%% \setcounter{lofdepth}{3}
+%% \setcounter{lotdepth}{3}
+%% \setcounter{secnumdepth}{3}
+
+
+%%%
+%%% New commands and other global definitions
+%%%
+
+\input{defs}
+
+%%%
+%%% Misc.
+%%%
+
+\usecolour{true}
+
+%%%
+%%% Titulos
+%%%
+
+\author{Alexandre Augusto Abreu Almeida}
+\authorR{Abreu Almeida, Alexandre Augusto}
+
+\advisor{Celia Beatriz Anteneodo de Porto}{Profa.}
+\advisorR{Anteneodo, Celia}
+
+\title{Condução térmica em uma cadeia de osciladores}
+
+\titleuk{Thermal conduction in a chain of oscillators}
+
+%% \subtitulo{Aqui vai o subtitulo caso precise}
+
+\day{15}
+\month{April}
+\year{2020}
+
+\city{Rio de Janeiro}
+\CDD{620.11} %??????
+\department{Física}
+\program{Física } %???????
+\school{Centro Técnico Científico} %???????
+\university{Pontifícia Universidade Católica do Rio de Janeiro}
+\uni{PUC-Rio }
+
+%%%
+%%% Jury
+%%%
+
+\jury{%
+  \jurymember{Fulano}{Prof.}
+    {????}{????}
+  \jurymember{Fulana}{Profa.}
+    {????}{????}
+  \jurymember{Fulano de tal}{Prof.}
+    {????}{????}
+  \jurymember{Fulena}{Profa.}
+    {????}{????}
+  \schoolhead{José Eugenio Leal}{Prof.}
+}
+
+
+%%%
+%%% Resume
+%%%
+
+\resume{%
+  Majored in Chemical Engineering by Universidade Federal do Rio de Janeiro - UFRJ (Rio de Janeiro, Brazil).
+}
+
+
+%%%
+%%% Acknowledgment
+%%%
+
+\acknowledgment{%
+  \noindent I would like to first thank my advisor ...
+  \bigskip
+
+  \noindent Then I wish to thank ...
+}
+
+
+%%%
+%%% Catalog prekeywords
+%%%
+
+\catalogprekeywords{%
+  \catalogprekey{Physics}% 
+}
+
+
+%%%
+%%% Keywords
+%%%
+
+\keywords{%
+  \key{Condução Térmica;}
+  \key{Lei de Fourier;}
+  \key{Oscilador;}
+  \key{Cadeia de Osciladores;}
+}
+
+\keywordsuk{%
+  \key{Thermal Conduction;}
+  \key{Fourier's Law;}
+  \key{Oscillator;}
+  \key{Chain of Oscillators;}
+}
+
+
+%%%
+%%% Abstract
+%%%
+
+\abstract{%
+	Nós simulamos a lei de fourier da condução de calor por meio de um modelo consistindo em uma cadeia de osciladores e mostramos que com algumas pequenas mudanças esse modelo pode descrever os chamados diodos térmicos.
+}
+
+\abstractuk{%
+	We simulate fourier's law of heat conduction by means of a model consisting of a chain os oscillators and then show that with a few small changes this model can describe the so called thermal diodes.
+}
+
+%%%
+%%% Dedication
+%%%
+
+\dedication{%
+  dedication.
+}
+
+%%%
+%%% Epigraph
+%%%
+
+\epigraph{%
+  My beautifull epigraph
+}
+\epigraphauthor{Alguém}
+\epigraphbook{Algum livro}
+
+
+%%%
+%%%
+%%%
+
+
+\begin{document}
+
+  \input{abrevs}
+  \input{chapter-1}
+  \input{chapter-2}
+  \input{chapter-3}
+  \input{chapter-4}
+  \input{chapter-5}
+  \input{conclusions}
+  %% ...
+  \arial
+  \nocite{*}
+  \bibliography{thesis_alexandre}
+  \normalfont
+%  \input{appendix}
+
+\end{document}
