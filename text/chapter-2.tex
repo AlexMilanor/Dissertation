@@ -65,9 +65,9 @@ where
  \]
 from which it can be seen that the transient part goes to zero exponentially with characteristic time $ \tau \propto L^{2}/\alpha^{2} $.
 
-\section{Mathematical Model}
+\section{Toy Model}
 
-The mathematical model studied here replaces the bar by a chain of particles with first-neighbors interactions and two Langevin heat baths on the extremities which interacts by a quadratic potential with the ends of the chains.
+A naive first idea for modeling this situation with the use of classical mechanics would be to replace the bar by a chain of particles with first-neighbors interaction through an harmonic potential.
 
 \begin{figure}[H] 
 		\centering 
@@ -77,14 +77,54 @@ The mathematical model studied here replaces the bar by a chain of particles wit
 		\caption{pictorial representation of the mathematical model}
 \end{figure} 
 
-Both parts of the system will be further discussed in the next sections.
+Along this text, many changes to this simple toy model will be discussed, but it is already worth noting that the failure of this model to reproduce the temperature profile given by Fourier's law has been known for some time (\cite{riederPropertiesHarmonic1967}) and nonlinear terms are needed to achieve this. The main toy model used in this work will be the so called Frenkel-Kontorova Model which add an external oscillating potential on the particles. 
 
-\subsection{Heat Baths}
+There many ways to simulate a constant temperature thermal baths in the literature and the one considered here will be using the dynamics of the Langevin equation.
 
-There are two main types of models that are used as heat baths. The first one is known as the Nosé-Hoover thermostat.
+The equations of motion will then be
+\begin{equation}\label{eq:1}
+	\begin{aligned}
+	&\frac{d v_1}{dt} = -\gamma v_1 + \eta_1(t) -k\left(x_1 - x_2\right),\\
+	&\frac{d v_i}{dt} = -k\left(2x_i - x_{i-1} - x_{i+1}\right),\\
+	&\frac{d v_N}{dt} = -\gamma v_N + \eta_N(t) -k\left(x_N - x_{N-1}\right),
+	\end{aligned}
+\end{equation}
 
 
-The heat baths at each side of the chain are simulated as Langevin heat baths with elastic potential due to its nearest neighbors interactions (this model is similar to the one on , but we eliminate the external string potential).
+Both the chain of particles and the heat baths shall be further discussed in the next sections.
+
+\section{Heat Baths}
+
+In an equilibrium situation there are many techniques which are used to try and maintain the system at constant temperature, such as re-scaling the particle velocities in each time step, changing the Hamiltonian of the thermal bath particles \cite{noseUnifiedFormulation1984} and using stochastic equations to describe the thermal noise \cite{lepriThermalConduction2003}.
+
+When trying to model low dimensional heat transfer, there are two main types of heat baths used, the Nose-Hoover thermostat and Langevin heat baths \cite{lepriThermalConduction2003}.
+
+\subsection{Nose-Hoover Thermostat}
+
+The Nose-Hoover thermostat consists of adding one more degree of freedom $ s $, along with its conjugated momentum $ p_{s} $, which represents somewhat an external system \cite{noseUnifiedFormulation1984}. Using the same notation as in \cite{evansNoseHoover1985}, let $ H_{0} $ be the classical many body Hamiltonian of the particle, the \textit{Nose Hamiltonian} is then defined as
+\[ H_{N} = H_{0}(q, p/s) + gKT\ln{s} + \frac{p_{s}^{2}}{2Q}, \]
+where $ g $ is the system's degrees of freedom and $ Q $ is a parameter 
+
+\subsection{Langevin Equation}
+
+In the XIX century the botanist Robert Brown studied what is now called the \textit{Brownian motion} which is the seemingly random motion of pollen grains in a viscous media such as water or acetone \cite{nelsonDynamicalTheories2001}. Paul Langevin tried to explain the phenomena using Newton's second law in 1908 by adding a random force which nowadays we recognize as being a Wiener random process and thus devising the so called Langevin equation \cite{lemonsPaulLangevin1997}.
+
+Such an equation can be written as
+\[ m\ddot{r} = -\gamma \dot{r} + \eta,\]
+where the $ -\gamma \dot{r} $ term represents a viscous force due to the media and $ \eta $ is a Wiener random process.
+
+
+\section{Particle chain}
+
+Introductory texts in solid state physics commonly use the picture of a solid as being composed of many classical particles interacting with their first neighbors through springs that follows Hooke's law as a first toy model to explain the effect of lattice vibrations in some phenomena such as the law of Dulong and Petit \cite{ashcroftSolidState1976}.
+
+Such an idea is commonly developed on the basis of two main assumptions, namely the small oscillations assumption that the atoms that constitute the solid only show small displacements from their equilibrium position and the harmonic approximation assumption that these small oscillations can be well described by a Taylor expansion up to second order.
+
+Although the first assumption is a good enough approximation, the second fails to explain both equilibrium properties such as thermal expansion and transport properties such as thermal conductivity.
+
+In fact in a paper from 1966 Z. Rieder, J. L. Lebowitz and E. Lieb showed, using a generalized form of the Liouville Equation, that such an harmonic crystal in a stationary state between two heat baths of unequal temperatures actually shows a flat temperature profile along the chain with average bath temperature. They used the kinetic energy of the particles as a proxy for the temperature (the kinetic temperature) \cite{riederPropertiesHarmonic1967}.
+
+
 
 \begin{equation}\label{eq:1}
 \boxed{
@@ -124,9 +164,15 @@ $$H = \sum_{i=2}^{N} \frac{p_i^2}{m_i} + \frac{k}{2}(x_i-x_{i-1})^2;$$
 %	\label{fig:system}
 %\end{figure}
 
-\section{The Frenkel-Kontorova Model}
 
-\section{The Model}
+
+Discussing Rieder and Lebowitz finding that the fourier profile is not achieved.
+
+\subsection{Fermi Pasta Ulam Tsingou}
+
+???????
+
+\subsection{The Frenkel-Kontorova Model}
 
 The Frenkel Kontorova model for a linear chain of particles can be seen as being described by a Hamiltonian of the form 
 \[ \mathcal{H} = K + U_{int} + U_{sub} \]
@@ -175,29 +221,29 @@ Hence,
 \sum_{i=1}^{N} V_{0,i}\left[1 - 
 \cos \left( \frac{2\pi q_{i}}{a_{s}}\right)\right]
 \]
-%
-%The equations of motion are
-%\[
-%\dot{p_i} = -\frac{\partial\mathcal{H}}{\partial q_i}, \;
-%\dot{q_i} = \frac{\partial\mathcal{H}}{\partial p_i}, \;
-%\]
-%
-%Assuming the particles $ i=1,N $ represent the thermal baths, we have for $ i=2, 3, \dots, N-1 $:
-%\begin{align*}
-%&\frac{dq_i}{dt} = \frac{p_{i}}{m_i} \\
-%&\frac{dp_i}{dt} = -k_{i}(q_{i}-q_{i-1}) + k_{i}(q_{i+1}-q_i) - 
-%\frac{2\pi V_{0,i}}{a_s}\sin \left(\frac{2\pi q_i}{a_s}\right)
-%\end{align*}
-%
-%Rewriting, 
-%\begin{align*}
-%&\frac{dq_i}{dt} = \frac{p_{i}}{m_i} \\
-%&\frac{dp_i}{dt} = -k_{i}(q_{i}-q_{i-1}) - k_{i}(q_{i} - q_{i+1}) - 
-%\frac{2\pi V_{0,i}}{a_s}\sin \left(\frac{2\pi q_i}{a_s}\right)
-%\end{align*}
-%
+
+The equations of motion are
+\[
+\dot{p_i} = -\frac{\partial\mathcal{H}}{\partial q_i}, \;
+\dot{q_i} = \frac{\partial\mathcal{H}}{\partial p_i}, \;
+\]
+
+Assuming the particles $ i=1,N $ represent the thermal baths, we have for $ i=2, 3, \dots, N-1 $:
+\begin{align*}
+&\frac{dq_i}{dt} = \frac{p_{i}}{m_i} \\
+&\frac{dp_i}{dt} = -k_{i}(q_{i}-q_{i-1}) + k_{i}(q_{i+1}-q_i) - 
+\frac{2\pi V_{0,i}}{a_s}\sin \left(\frac{2\pi q_i}{a_s}\right)
+\end{align*}
+
+Rewriting, 
+\begin{align*}
+&\frac{dq_i}{dt} = \frac{p_{i}}{m_i} \\
+&\frac{dp_i}{dt} = -k_{i}(q_{i}-q_{i-1}) - k_{i}(q_{i} - q_{i+1}) - 
+\frac{2\pi V_{0,i}}{a_s}\sin \left(\frac{2\pi q_i}{a_s}\right)
+\end{align*}
+
 %To make a thermal diode, we make so that the first $ N/2 $ particles have parameters $ k_i = k_{L}, V_{0,i} = V_{L} $ while the other half have different parameters $ k_i = k_{R}, V_{0,i} = V_{R} $, and connect the two halves by yet a third spring constant, $ k_{int} $.
-%
+
 %\section{Polynomial Interaction}
 %
 %Let us assume that the middle particles ( particles $ N/2 $ and $ N/2+1 $) interact by different forces. We shall assume that their interaction is given by:
