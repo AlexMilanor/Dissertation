@@ -2,362 +2,82 @@
 
 \chapter{Computational Methods}
 
+Depending on which of the toy models brought forward in chapter 2 for the bath and chain of particles one uses it may be really hard or even impossible to fin an analytical solution. Thus it is common to use computational methods to simulate such a system and watch its dynamical behavior in some time interval $ [a,b] $.
+
+To be able to use a computer for such a task one first needs to make a partition of the time interval. Consider then such a partition having $ N $ points $ t_1=a, t_2, t_3, \dots, t_N=b $ all separated by a constant time step $ \Delta t = \tau $, meaning that $ t_{n+1} - t_{n} = \tau $ for all $ n\in \{1,2,3,\dots,N\} $. They can be written in terms of $ t_{1} $ as
+$$ t_{n+1} = t_{1} + n\cdot \tau. $$
+
+In the case of deterministic baths the equations to be solved consist of a system of ordinary differential equations whose graph will me approximated on the partition points.
+
+However when one is looking at the stochastic baths all the variables of interest have to be seen as random variables which means that instead of finding an approximation to a given graph what is needed is to make sure that the statistical properties of the equations are satisfied.
+
+Since many methods for the solution of stochastic differential equations are adaptations of the deterministic ones, it is interesting to discuss the later first.
+
+(Given that most of the chain do not interact directly with the random variables, maybe one can also draw approximate conclusions to the problem at hand)
+
 \section{Deterministic}
-\section{Stochastic}
 
+In the case of a system of ordinary differential equations, the position of each particle may be seen as a function of time $ x=x(t) $ to be approximated.
 
-We will give a summary of Langevin simulation here. 
+[Show the result of simulating a simple harmonic motion with each method]
 
-The Langevin equation is:
-\[
-\boxed{\frac{dv}{dt} = -\gamma v + \eta\left(t\right)}
-\]
-$$ \frac{dx}{dt} = v $$
+\subsection{Euler's Method} 
 
-Where $\eta\left(t\right)$ is a gaussian stochastic process defined by the autocorrelation function:
-$$ \left< \eta\left(t\right) \eta\left(t'\right)\right> = \Gamma \delta\left(t - t'\right) $$
-
-\section{Solution} 
-
-Theoretical Formulae:
-$$ \boxed{\left<v(t)\right> = v_{0} e^{-\gamma t}} $$
-
-$$ \boxed{\sigma_{v}^{2} = \frac{\Gamma}{2\gamma}
-\left(1 - e^{-2\gamma t}\right)}$$
-
-$$ \boxed{\left<x(t)\right> = x_{0} + \frac{v_{0}}{\gamma}\left(1 - e^{-\gamma t}\right)}$$
-
-$$ \boxed{\sigma_{x}^{2} = \frac{\Gamma}{\gamma^{2}} \left(t - \frac{2}{\gamma}(1-e^{-\gamma t}) + \frac{1}{2\gamma}\left(1-e^{-2\gamma t}\right) \right)}$$
-
-\subsection{Macroscopic Variables}
-
-We can relate our parameters with thermodynamics variables.
-
-The ensemble average in the equilibrium (the limit when $t \rightarrow \infty$) is:
-$$ \left< v^{2} \right> = \frac{\Gamma}{2\gamma} $$
-
-From the kinetic theory, we also know that
-$$ \frac{1}{2} m \left< v^{2} \right> = \frac{1}{2}k_{B}T $$
-
-Using the two equations together, we get:
-$$ \boxed{\Gamma = \frac{2\gamma k_{B}T}{m}}$$
-
-Looking at the asymptotic behavior of the variance of the position of the particle, which gives us a relation with the diffusion coefficient.
-$$ 2D = \frac{\Gamma}{\gamma^2} $$
-$$ D = \frac{k_{B}T}{m\gamma} $$
-$$ \boxed{\gamma = \frac{k_{B}T}{mD}} $$
-
-However, for spherical particles of radius a, we could also use stokes-law for the drag coefficient.
-$$ \boxed{\gamma = \frac{6\pi \mu a}{m}} $$
-
-\subsection{Simulation}
-And can be solved by the Euler method, using the iterations:
-$$ \boxed{v_{n+1} = v_{n} - \tau \gamma v_{n} + \sqrt{\tau\Gamma}\xi_{n}} $$
-$$\boxed{ x_{n+1} = x_{n} + \tau v_{n} }$$
-
-Where $\tau = \Delta t$ is the time step used in the method and $\xi_{n}$ is a sequence of random variables sampled from a gaussian distribution $\mathcal{N}(0,1)$. \par 
-The used parameters and the results are given below.
-\begin{itemize}
-    \item Noise amplitude: $ \Gamma = 0.1 $
-    \item drag coefficient: $ \gamma = 0.1 $
-    \item initial velocity: $ v_{0} = 1.0 $
-    \item initial position: $ x_{0} = 0.0 $
-    \item time step: $ \tau = 0.0001 $
-    \item Number of particles in the ensemble: $ N_{p} = 200 $
-\end{itemize}
-
-\subsubsection{Euler}
-
-\subsubsection{Stochastic Runge Kutta}
-
-
-
-
-\section{Solution 1 - Euler's Method} 
-
-\subsection{Theory}
-The Euler's method for the solution of differential equations and of the Langevin Bath is based on the simple and naive idea of partitioning the simulation time interval in small discrete steps $\Delta t = \tau$ and approaching the evolution of the system in each step by a taylor series truncated at the linear terms.
-
-$$\mathbf{u}(t+\tau) \approx \mathbf{u}(t) + \tau \frac{d\mathbf{u}}{dt}$$
-
-Where the derivative is given by the differential equation.
-
+The Euler's Method consists of approaching the evolution of the system by a Taylor series truncated at the linear terms at each step
+$$\mathbf{u}(t_n+\tau) \approx \mathbf{u}(t_n) + \tau\left( \frac{d\mathbf{u}}{dt}\right)_{t=t_n},$$
+the derivative is then given by the ordinary differential equation itself
 $$\frac{d\mathbf{u}}{dt} = f(\mathbf{u},t)$$
+(the bold font is here used to indicate vector quantities).
 
-The bold font is used to indicate vector quantities.
 
-For the solution of a single Langevin bath, this method works reasonably well. However, when used to simulate the motion of an oscillator subject to an elastic potential of the form $k x^2/2$, the method gives an error for the amplitude of oscillation that grows exponentially with the number of time steps in the simulation ().
+When the time step goes to zero, $ \tau\to 0 $, the approximate solution is known to converge (zero-stability) under certain weak assumptions on the ODEs \cite{quarteroniNumericalMathematics2007} and thus it is to be expected that for small enough $ \tau $ and a fixed time interval such a method works reasonably well. 
 
-The reason for this is that Euler's method does not conserve energy, and instead increases it exponentially. This can be seen from a simple calculation for the equations of motion of a simple harmonic oscillator (system of equations \ref{eq:2}). First, let us show that such a system should conserve energy.
+However, when used to simulate the motion of an oscillator subject to an elastic potential of the form $k x^2/2$, the method gives an error for the amplitude of oscillation that grows exponentially with the number of time steps in the simulation \cite{giordanoComputationalPhysics1997}.
 
+The reason for this is that Euler's method does not conserve energy, and instead increases it exponentially. This can be seen from a simple calculation for the equations of motion of a simple harmonic oscillator. Let the equations of motion be
 \begin{equation*} \label{eq:2}
 \begin{aligned}
 &\frac{dv}{dt} = -\frac{k}{m}x\\
-&\frac{dx}{dt}=v
+&\frac{dx}{dt}=v.
 \end{aligned}
 \end{equation*}
 
-Multiplying the first equation in the system \ref{eq:2} by $m v$ and the second by $k x$ and summing both of them, we see that the variation of the total energy with time is zero.
-
-$$\frac{m}{2}\frac{d v^2}{dt} = \frac{d E_c}{dt} = -k x v, \quad
-\frac{k}{2}\frac{d x^2}{dt} = \frac{d E_p}{dt} = k x v$$
-
-$$\frac{d E_c}{dt} + \frac{d E_p}{dt} = \frac{d E_T}{dt} = 0$$
-
-Now, using the approximation of the Euler's method for the equations:
-
+Using the approximation for Euler's method one would then write
 \begin{equation*}
 \begin{aligned}
 &v_{n+1} = v_n -\frac{k}{m}x_n \tau\\
 &x_{n+1} = x_n + v_n \tau
 \end{aligned}
 \end{equation*}
-
-Squaring both sides of the equations, multiplying them by $m/2$ and $k/2$, respectively, and then summing them we get:
-
+and squaring both sides of the equations, multiplying them by $m/2$ and $k/2$, respectively, and then summing them the end result is
 $$
 E_{c,n+1} = E_{c,n} -k x_n v_n \tau + \frac{k}{m} \tau^2 E_{p,n}, \quad
-E_{p,n+1} = E_{p,n} + k x_n v_n \tau + \frac{k}{m} \tau^2 E_{c,n}
+E_{p,n+1} = E_{p,n} + k x_n v_n \tau + \frac{k}{m} \tau^2 E_{c,n};
 $$
-
 \begin{equation*}
-E_{T, n+1} = E_{T,n}\left(1 + \frac{k}{m}\tau^2\right)
+E_{T, n+1} = E_{T,n}\left(1 + \frac{k}{m}\tau^2\right),
 \end{equation*}
+showing that the energy increases with a fixed ratio simply because of the approximations used.
 
-Showing that the energy increases with a fixed ratio simply because of the approximations used.
-
-Mathematically, 
+Mathematically this problem is due to the region of "absolute stability" of the method.[?????]
 
 It's also possible to see this using new coordinates $x' = \sqrt{k/2}x$ and $v' = \sqrt{m/2}v$, the energy being just the distance from the point $(x',v')$ to the origin in the phase space. With each new iteration, this point goes further and further away from the origin.
 (In the harmonic oscillation, the trajectory in this phase space would be a circle centered at the origin).
 
-The problem would still continue even if we displaced the particle from the origin (just change the frame of reference by translation $x' = x-a$) and even if we added many elastic forces to the particle (since all forces are linear with respect to displacement $F_el = k(x-a)$, the resulting force will also be linear with respect to displacement $F_R = k'(x-a')$).
 
-This means that, for our case, the euler's method will make the energy of the middle particle increase indefinitely. In the next part, we will see the results from the simulations.
+\subsection{Runge Kutta}
 
-\subsubsection{Results}
-Now lets compile the results of using the Euler's Method for both equation \ref{eq:1} and \ref{eq:2}. The parameters used are given as bellow:
-
-\begin{itemize}
-	\item $\gamma = 0.1$ the drag coefficient at the langevin baths
-	\item $\tau = 0.001 s$ timestep in seconds
-	\item $tempo = 120.0 s$ total simulation time in seconds
-	\item $A_e = 0.1$ variance of the process for the bath at temperature $T_1$
-	\item $A_d = 2.0$ variance of the process for the bath at temperature $T_2$
-	\item $k=0.1$ spring constant (same for all springs)
-	\item $N_P = 100$ number of different simulations
-\end{itemize}
-
-The initial conditions are that all displacements and velocities are zero.
-
-For each group of equations, we will take a look at the averages for the squared velocity of each particle $\left<v^2\right>$, looking at the time average and the ensemble average. The reason for this is that, from the equipartition theorem, we have:
-
-$$T_i = \frac{m}{2}\left<v^2\right>$$
-
-If the system is ergodic, it doesn't matter if we look at this average as being a time average or an ensemble average, it should be the same. For the cases of time average, we use the first out of the 100 simulations.
-
-The results for the group of equations \ref{eq:1} is given below. In them we can see that, on average, all the simulations are such that the middle particle energy grows indefinitily (looking at the ensemble average). 
-We can also see that the time average of the middle particle for the simulation we look at is always bigger than the time average of the baths (which must be due to the increasing energy with each iteration).
-
-
-
-Now we take a look at the results for the group of equations \ref{eq:2} below. In this case, we will change the spring constant to $k=0.01$ so that the result will be easier to see.
-This time, we can see that it's as if the middle particle doesn't move at all, although the heat baths don't change much (aside from their velocity oscilating very fast).
-
-
-
-
-
-
-
-
-
-
-First, let us see the simple one dimensional harmonic oscillator consisting of a particle subject to an elastic force which obeys Hooke's law. This problem is described by the linear second order ODE
-$$\Ddot{x}(t) = -\omega^2 x(t),$$
-
-where $\omega^2 = k/m$ ($k$ being the elastic constant and $m$ the particle mass) and its general solution for any initial value conditions $x(0)$ and $\Dot{x}(0)$ is given by [Symon Mechanics]
-$$ x(t) = x(0)\cos{\omega t} + \frac{\Dot{x}(0)}{\omega}\sin{\omega t}.$$
-
-It is important to notice that our ODE can be written as a system of first order ODEs if we define a new variable $v(t)=\Dot{x}(t)$ [Smale ODE], the velocity, which gives us
-$$\Dot{x}(t) = v(t)$$
-$$\Dot{v}(t) = -\omega^2 x(t),$$
-
-because we will use this version of the equation for all the numerical solutions. 
-
-There are two other important things to remember about the dynamics. The first one is that this system conserves energy, which can be seen from the following derivation
-
-$$m v\frac{d v}{dt} = \frac{m}{2}\frac{d v^2}{dt} = \frac{d E_k}{dt} = -k x v$$
-
-$$k x\frac{d x}{dt} = \frac{k}{2}\frac{d x^2}{dt}= \frac{d E_p}{dt} = k x v$$
-
-$$\frac{d E_k}{dt} + \frac{d E_p}{dt} = \frac{d E_T}{dt} = 0,$$
-
-which means that the orbit of our system in the phase space is described by an ellipse [TaylorMechanics]
-
-$$ \frac{x^2}{2/k} + \frac{v^2}{2/m} = E_t .$$
-
-An example is given in [fig:1], where we have taken $k=0.5$, $m=2$ and $E_t=1$, where we disregard the units, since they don't matter to this analysis.
-
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics[scale=0.7]{images/01phase_space.png}
-%	\caption{Phase space representation of simple oscillator}
-%\end{figure}
-
-To simplify our second commentary, let us assume that $\Dot{x}(0)=0$. Then, since the velocity of the particle oscillates, the kinetic energy also oscillates
-
-$$E_k = \frac{1}{2}mv(t)^2 = \frac{1}{2} m\omega^2 x^2(0) sin^2(\omega t) .$$
-
-From a purely dynamical point of view, this oscillations might be interesting, but they don't give us a clear picture on how big the total kinetic energy of our particle is (just think about comparing the kinetic energy of two out of phase oscillators), since at times its higher or lower. If we want to better compare two particles to see how much more energetic one is than the other, we need to take the average kinetic energy along the oscillation period (giving us a constant picture of the kinetic energy with time), which is [Moyses 2]
-$$\overline{E_k} = \frac{1}{2 \pi}\int_{0}^{2 \pi}E_k(t) dt = \frac{1}{4} m \omega^2 x^2(0) .$$
-Also, using $E_p = (1/2)kx^2(t)$, we can find the total energy 
-$$E_T = \frac{1}{2}m\omega^2 x^2(0) ,$$
-showing that it indeed is a constant of the motion.
-
-\section{Computational Methods}
-
-To solve our problem by computational methods, we first partition the time interval $[a,b]$, for which we want the solution, in $N$ points $t_1=a, t_2, t_3, \dots, t_N = b$ separated by a constant time step $\Delta t = \tau$, which means we can obtain each by
-$$t_{n+1} = t_n + \tau,$$
-
-and we then approximate the graph of the function by a sequence of points $(t_n,\mathbf{x}_n)$ [Smale ODE]. All the methods we use here follow the general equation [Chapra Numerico]
-$$x_{n+1} = x_n + \phi \tau$$
-for each of the components of the vectors $\mathbf{x_{n+1}}$ and $\mathbf{x_n}$, where $\phi$ can be seen as an increment which might depend on all components in a multitude of ways.
-
-In each of the simulations the parameters used were (the physical units are not important for the comparison of the computational methods):
-
-\begin{itemize}
-	\item initial position $x(0)=2$
-	\item initial velocity $\Dot{x}(0)=0$
-	\item mass $m=1$
-	\item spring constant $k=2$
-	\item time step $\tau = 0.01$
-	\item time interval size $30$
-\end{itemize}
-
-With this, the exact solution is then $x(t)=2cos(\sqrt{2}t)$.
-
-For the comparison of the algorithms, we will be more interested in their energy conserving properties and thus shall look at the energy of the system along the time and its portrait in phase space.
-
-\subsection{Euler Method}
-The Euler Method is the simplest possible method, based on the approach of the evolution of the system by a taylor series truncated at the linear terms at each step
-
-$$\mathbf{u}(t_n+\tau) \approx \mathbf{u}(t_n) + \tau\left( \frac{d\mathbf{u}}{dt}\right)_{t=t_n}$$
-
-The resulting solution can be seen in figure [fig:2] together with the exact curve, letting us see how to Euler's method artificially makes the amplitude of the oscillations grow. 
-
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics[scale=0.6]{images/euler_position_oscillation.png}
-%	\caption{The blue line is the position of the particle with time for the simulation using the Euler method. The black dashed line is the exact solution.}
-%\end{figure}
-
-This method is convergent, meaning that for a fixed range of time, as $\tau\to 0$ we have that the approximation $x_n$ converges to the true solution $x(t_n)$ [Quarteroni]. 
-
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics[scale=0.6]{images/euler_position_oscillation2.png}
-%	\caption{Euler method solution for the position of the particle against the true solution in the case $\tau = 0.001$}
-%\end{figure}
-
-> Absolute stability
-
-
-
-However, 
-
-For small enough $\tau$, this method works reasonably well since it is convergent (as $\tau\to 0$, the approximate solution converges to the true solution $x_n\to x(t_n)$ for a fixed time interval[Quarteroni]) it has the problem that, for a given time steps, the error grow without bounds as the time interval increases, so that the energy is not conserved, growing in an exponential rate [Giordano]. In fact, we have
-
-\begin{equation*}
-\begin{aligned}
-&v_{n+1} = v_n -\frac{k}{m}x_n \tau\\
-&x_{n+1} = x_n + v_n \tau
-\end{aligned}
-\end{equation*}
-
-which we then square and multiply the first by $m/2$ and the second by $k/2$, getting
-
-$$E_{c,n+1} = E_{c,n} -k x_n v_n \tau + \frac{k}{m} \tau^2 E_{p,n}$$
-$$E_{p,n+1} = E_{p,n} + k x_n v_n \tau + \frac{k}{m} \tau^2 E_{c,n}$$
-$$E_{t,n+1} = E_{t,n} + \frac{k}{m} \tau^2 E_{t,n}$$
-
-showing that $E_{t,n}$ follows a geometric progression with rate $(1+\frac{k}{m}\tau^2)$. Since this will be true even if we make any translation in the position, the Euler method also does not conserve energy for a linear harmonic chain. 
-
-In fact, a subtle increase can be observed in the amplitude of the oscillations in figure [fig:1], and the energy of our simulation is given in figure [fig:2], showing its growth by almost $35\%$.
-
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[scale=0.5]{images/euler_position_oscillation.png}
-%	\caption{Energy of the particle with time for the simulation using the Euler method.}
-%\end{figure}
-
-We can also take a look at the phase space of the solution in figure [fig:3], which will be a spiral.
-
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[scale=0.5]{images/euler_phase_oscillation.png}
-%	\caption{Orbit in phase space of the particle for the simulation using the Euler method.}
-%\end{figure}
-
-\subsubsection{Runge Kutta}
-
-The second algorithm which we will use is the Runge Kutta family of methods, in specific the classical 2nd order and 4th order methods. In this method, we approximate the increment by a series.
+Another commonly used algorithm is the Runge Kutta family of methods, mostly the classical 2nd order and 4th order methods. In this method, the increment is approximated by a series.
 
 $$\phi = \sum_{i=0}^{m}(a_i k_i)$$
 
-For the second order, we have....
+For the second order, ....
 
-The resulting graph can be seen in figure [fig:4].
-
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[scale=0.5]{images/rk2_position_oscillation.png}
-%	\caption{Position with respect to time of the particle using 2nd order Runge Kutta.}
-%\end{figure}
-
-In this case, although the method does not exactly conserves energy, the energy changes very little with each step of the method, as seen in figure [fig:5]. Because of this, the phase space looks very much like a closed ellipse, as shown in figure [fig:6].
-
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[scale=0.5]{images/rk2_energy_oscillation.png}
-%	\caption{Energy of the particle with respect to time using 2nd order Runge Kutta.}
-%\end{figure}
-
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[scale=0.5]{images/rk2_phase_oscillation.png}
-%	\caption{Orbit of the particle in phase space using 2nd order Runge Kutta.}
-%\end{figure}
+In this case, although the method does not exactly conserves energy, the energy changes very little with each step of the metho. Because of this, the phase space looks very much like a closed ellipse.
 
 The fourht order Runge Kutta ....
 
-The result is given in figure [fig:7].
-
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[scale=0.5]{images/rk4_position_oscillation.png}
-%	\caption{Position of the particle with respect to time using 4th order Runge Kutta.}
-%\end{figure}
-
-In this case, the energy actually oscillates with a very small amplitude. In fact, we can only see the oscillations if we use a really small scale in our graph, as can be seen comparing figures [fig:8] and [fig:9]. Due to how small this oscillations are, the system's orbit describes an almost perfect ellipse in phase space, as seen in figure [fig:10].
-
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[scale=0.5]{images/rk4_energy_oscillation.png}
-%	\caption{Energy of the particle using 4th order Runge Kutta.}
-%\end{figure}
-
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[scale=0.5]{images/rk4_energy_prec_oscillation.png}
-%	\caption{Energy of the particle using 4th order Runge Kutta seen from a really small scale.}
-%\end{figure}
-
-%\begin{figure}[H]
-%	\centering
-%	\includegraphics[scale=0.5]{images/rk4_phase_oscillation.png}
-%	\caption{Orbit of the particle in phase space using 4th order Runge Kutta.}
-%\end{figure}
+In this case, the energy actually oscillates with a very small amplitude. In fact, the oscillations can only be seen by looking at simulation results with a really small scale. Due to how small this oscillations are, the system's orbit describes an almost perfect ellipse in phase space.
 
 \subsubsection{Verlet}
 
@@ -369,17 +89,17 @@ where $\left\{\mathcal{A}, \mathcal{H} \right\}$ is the Poisson Bracket, defined
 
 $$\left\{\mathcal{A}, \mathcal{H} \right\} = \sum_{i=1}^{d\cdot N_p} \left[ \frac{\partial \mathcal{H}}{\partial p_i}\frac{\partial \mathcal{A}}{\partial q_i} - \frac{\partial \mathcal{H}}{\partial q_i}\frac{\partial \mathcal{A}}{\partial p_i}\right] = \sum_{i=1}^{d\cdot N_p} \left[ \Dot{q_i} \frac{\partial \mathcal{A}}{\partial q_i} + \Dot{p_i}\frac{\partial \mathcal{A}}{\partial p_i}\right]$$
 
-which runs through the $d$ degrees of freedom of each of the $N_p$ particles ([salinas]). For the case of the density of states, Liouville's theorem states that $\frac{d \rho}{dt} = 0$.
+which runs through the $d$ degrees of freedom of each of the $N_p$ particles \cite{salinasIntroducaoFisica2013}. For the case of the density of states, Liouville's theorem states that $\frac{d \rho}{dt} = 0$.
 
-It is possible to define a Liouville operator $\mathcal{L}$ by means of $i\mathcal{L}A = \left\{A,\mathcal{H}\right\}$, which helps find the solution using the exponential of our operator. If the partial derivative with respect to time is zero, then
+It is possible to define a Liouville operator $\mathcal{L}$ by means of $i\mathcal{L}A = \left\{A,\mathcal{H}\right\}$, which helps find the solution using the exponential of the operator. If the partial derivative with respect to time is zero, then
 
 $$\mathcal{A}(\mathbf{q}(t), \mathbf{p}(t)) = e^{i\mathcal{L}t} \mathcal{A}(\mathbf{q}(0), \mathbf{p}(0))$$
 
-The idea of the Verlet Algorithm ([allentildesley]) is to define two "Liouville like" operators, $i\mathcal{L}_1$ and $i\mathcal{L}_2$ corresponding to evolutions only on position and momentum, respectively, such that $i\mathcal{L} = i\mathcal{L}_1 + i\mathcal{L}_2$, and then approximate the exponential for the time evolution as being
+The idea of the Verlet Algorithm ([allentildesley, liquid simulation]) is to define two "Liouville like" operators, $i\mathcal{L}_1$ and $i\mathcal{L}_2$ corresponding to evolutions only on position and momentum, respectively, such that $i\mathcal{L} = i\mathcal{L}_1 + i\mathcal{L}_2$, and then approximate the exponential for the time evolution as being
 
 $$e^{i\mathcal{L}\delta t} \approx e^{i\mathcal{L}_2\delta t/2}e^{i\mathcal{L}_1\delta t}e^{i\mathcal{L}_2\delta t/2} .$$
 
-Using $\mathcal{A}$ as being the vector in the phase space and applying our approximated evolution operator, we get the system of equations:
+Using $\mathcal{A}$ as being the vector in the phase space and applying the approximated evolution operator, one gets the system of equations:
 
 $$\mathbf{p}(t+\delta t/2) = \mathbf{p}(t) + \frac{\delta t}{2}\frac{d \mathbf{p}(t)}{dt}$$
 
@@ -387,70 +107,16 @@ $$\mathbf{q}(t) = \mathbf{q}(t) + \delta t \frac{1}{m}\mathbf{p}(t)  $$
 
 $$\mathbf{p}(t+\delta t) = \mathbf{p}(t+\delta t/2) + \frac{\delta t}{2}\frac{d \mathbf{p}(t+\delta t)}{dt}$$
 
+\section{Stochastic}
 
+Computational models for solving stochastic differential equations.
 
-% -*- coding: utf-8; -*-
+[Discuss pseudo random number generators?]
 
-We will give a summary of Langevin simulation here. 
+\section{Euler's Method} 
 
-The Langevin equation is:
-\[
-\boxed{\frac{dv}{dt} = -\gamma v + \eta\left(t\right)}
-\]
-$$ \frac{dx}{dt} = v $$
+The Langevin Equation can be solved by the Euler method, using the iterations:
+$$ v_{n+1} = v_{n} - \tau \gamma v_{n} + \sqrt{\tau\Gamma}\xi_{n} $$
+$$ x_{n+1} = x_{n} + \tau v_{n}$$
 
-Where $\eta\left(t\right)$ is a gaussian stochastic process defined by the autocorrelation function:
-$$ \left< \eta\left(t\right) \eta\left(t'\right)\right> = \Gamma \delta\left(t - t'\right) $$
-
-\subsection{Solution} 
-
-Theoretical Formulae:
-$$ \boxed{\left<v(t)\right> = v_{0} e^{-\gamma t}} $$
-
-$$ \boxed{\sigma_{v}^{2} = \frac{\Gamma}{2\gamma}
-	\left(1 - e^{-2\gamma t}\right)}$$
-
-$$ \boxed{\left<x(t)\right> = x_{0} + \frac{v_{0}}{\gamma}\left(1 - e^{-\gamma t}\right)}$$
-
-$$ \boxed{\sigma_{x}^{2} = \frac{\Gamma}{\gamma^{2}} \left(t - \frac{2}{\gamma}(1-e^{-\gamma t}) + \frac{1}{2\gamma}\left(1-e^{-2\gamma t}\right) \right)}$$
-
-\subsection{Macroscopic Variables}
-
-We can relate our parameters with thermodynamics variables.
-
-The ensemble average in the equilibrium (the limit when $t \rightarrow \infty$) is:
-$$ \left< v^{2} \right> = \frac{\Gamma}{2\gamma} $$
-
-From the kinetic theory, we also know that
-$$ \frac{1}{2} m \left< v^{2} \right> = \frac{1}{2}k_{B}T $$
-
-Using the two equations together, we get:
-$$ \boxed{\Gamma = \frac{2\gamma k_{B}T}{m}}$$
-
-Looking at the asymptotic behavior of the variance of the position of the particle, which gives us a relation with the diffusion coefficient.
-$$ 2D = \frac{\Gamma}{\gamma^2} $$
-$$ D = \frac{k_{B}T}{m\gamma} $$
-$$ \boxed{\gamma = \frac{k_{B}T}{mD}} $$
-
-However, for spherical particles of radius a, we could also use stokes-law for the drag coefficient.
-$$ \boxed{\gamma = \frac{6\pi \mu a}{m}} $$
-
-\section{Simulation}
-And can be solved by the Euler method, using the iterations:
-$$ \boxed{v_{n+1} = v_{n} - \tau \gamma v_{n} + \sqrt{\tau\Gamma}\xi_{n}} $$
-$$\boxed{ x_{n+1} = x_{n} + \tau v_{n} }$$
-
-Where $\tau = \Delta t$ is the time step used in the method and $\xi_{n}$ is a sequence of random variables sampled from a gaussian distribution $\mathcal{N}(0,1)$. \par 
-The used parameters and the results are given below.
-\begin{itemize}
-	\item Noise amplitude: $ \Gamma = 0.1 $
-	\item drag coefficient: $ \gamma = 0.1 $
-	\item initial velocity: $ v_{0} = 1.0 $
-	\item initial position: $ x_{0} = 0.0 $
-	\item time step: $ \tau = 0.0001 $
-	\item Number of particles in the ensemble: $ N_{p} = 200 $
-\end{itemize}
-
-\subsection{Euler}
-
-\subsubsection{Stochastic Runge Kutta}
+Where $\tau = \Delta t$ is the time step used in the method and $\xi_{n}$ is a sequence of random variables sampled from a gaussian distribution $\mathcal{N}(0,1)$. 
