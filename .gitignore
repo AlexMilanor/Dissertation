@@ -12,3 +12,7 @@ text/*.toc
 # Removing inkscape images auxiliary files
 text/images/*.pdf
 text/images/*.sh
+
+# Removing files from compilations
+**/*.o
+thermal_diode/thermal_diode
