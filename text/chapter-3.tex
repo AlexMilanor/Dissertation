@@ -1,6 +1,10 @@
 % -*- coding: utf-8; -*-
 
-\chapter{Computational Methods}
+\chapter{Solution Methods}
+
+\section{Analytical Methods}
+
+\section{Computational Methods}
 
 Depending on which of the toy models brought forward in chapter 2 for the bath and chain of particles one uses it may be really hard or even impossible to fin an analytical solution. Thus it is common to use computational methods to simulate such a system and watch its dynamical behavior in some time interval $ [a,b] $.
 
@@ -15,13 +19,13 @@ Since many methods for the solution of stochastic differential equations are ada
 
 (Given that most of the chain do not interact directly with the random variables, maybe one can also draw approximate conclusions to the problem at hand)
 
-\section{Deterministic}
+\subsection{Deterministic}
 
 In the case of a system of ordinary differential equations, the position of each particle may be seen as a function of time $ x=x(t) $ to be approximated.
 
 [Show the result of simulating a simple harmonic motion with each method]
 
-\subsection{Euler's Method} 
+\subsubsection{Euler's Method} 
 
 The Euler's Method consists of approaching the evolution of the system by a Taylor series truncated at the linear terms at each step
 $$\mathbf{u}(t_n+\tau) \approx \mathbf{u}(t_n) + \tau\left( \frac{d\mathbf{u}}{dt}\right)_{t=t_n},$$
@@ -65,7 +69,7 @@ It's also possible to see this using new coordinates $x' = \sqrt{k/2}x$ and $v' 
 (In the harmonic oscillation, the trajectory in this phase space would be a circle centered at the origin).
 
 
-\subsection{Runge Kutta}
+\subsubsection{Runge Kutta}
 
 Another commonly used algorithm is the Runge Kutta family of methods, mostly the classical 2nd order and 4th order methods. In this method, the increment is approximated by a series.
 
@@ -107,13 +111,13 @@ $$\mathbf{q}(t) = \mathbf{q}(t) + \delta t \frac{1}{m}\mathbf{p}(t)  $$
 
 $$\mathbf{p}(t+\delta t) = \mathbf{p}(t+\delta t/2) + \frac{\delta t}{2}\frac{d \mathbf{p}(t+\delta t)}{dt}$$
 
-\section{Stochastic}
+\subsection{Stochastic}
 
 Computational models for solving stochastic differential equations.
 
 [Discuss pseudo random number generators?]
 
-\section{Euler's Method} 
+\subsubsection{Euler's Method} 
 
 The Langevin Equation can be solved by the Euler method, using the iterations:
 $$ v_{n+1} = v_{n} - \tau \gamma v_{n} + \sqrt{\tau\Gamma}\xi_{n} $$
