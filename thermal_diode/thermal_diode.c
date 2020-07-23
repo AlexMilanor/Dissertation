@@ -108,12 +108,12 @@ int main(int argc, char **argv){
                    poly_power, 
                    timeStep, 
                    timeRange,
-                   timeTransient
+                   timeTransient,
                    Baths_Amp, 
                    Spring_Const, 
                    semente);
 
-        printf("Fim da Simulação")
+        printf("Fim da Simulação");
 
     }
 
