@@ -68,10 +68,12 @@ double step_next(double delta, double x0, double K0, double K1, double K2, doubl
     return x0 + (K0+2.0*K1+2.0*K2+K3)*delta/6.0;
 }
 
-int diode_srk4(char *name, double *x0, double *v0, int N_C, double gama, double *V, double mu, double tau, double tempo, double *A, double *k, unsigned int *semente){
+int diode_srk4(char *name, double *x0, double *v0, int N_C, double gama, 
+               double *V, double mu, double tau, double tempo, double TransientTime, 
+               double *A, double *k, unsigned int *semente){
+
 /* Main code for the SRK4 in the harmonic chain */
 
-    float time_print=25000.0; // printed time interval
     int i, m;  // iteration variables
     long int N; // Number of points
     N = (long int)tempo/tau; // N = time_range/tau
@@ -119,8 +121,8 @@ int diode_srk4(char *name, double *x0, double *v0, int N_C, double gama, double 
     // Iteration for the time interval
     for(t=1;t<N+1;t++){
 
-        // When time is large, we just want the last 300 seconds
-        if(tempo - (double)t*tau<time_print){
+        // We save the results after the transient time
+        if((double)t*tau>TransientTime){
             fprintf(file, "%.8g",(double)t*tau);
         }
 
@@ -181,9 +183,12 @@ int diode_srk4(char *name, double *x0, double *v0, int N_C, double gama, double 
         Kx[0][3] = dxdt(v[0][3]);
         v[0][4] = step_next(tau, v[0][0], Kv[0][0], Kv[0][1], Kv[0][2], Kv[0][3]) + sqrt(A[0]*tau)*epse;
         x[0][4] = step_next(tau, x[0][0], Kx[0][0], Kx[0][1], Kx[0][2], Kx[0][3]);
-        if(tempo - (double)t*tau<time_print){
+        
+        // We save the results after the transient time
+        if((double)t*tau>TransientTime){
             fprintf(file, ",%.8g,%.8g",x[0][4],v[0][4]);
         }
+
         //Middle Particles
         for(i=1;i<N_C-1;i++){
             if(i < N_C/2 - 1){
@@ -210,16 +215,22 @@ int diode_srk4(char *name, double *x0, double *v0, int N_C, double gama, double 
                 v[i][4] = step_next(tau, v[i][0], Kv[i][0], Kv[i][1], Kv[i][2], Kv[i][3]);
                 x[i][4] = step_next(tau, x[i][0], Kx[i][0], Kx[i][1], Kx[i][2], Kx[i][3]);
             }
-        if(tempo - (double)t*tau<time_print){
+
+        // We save the results after the transient time
+        if((double)t*tau>TransientTime){
             fprintf(file, ",%.8g,%.8g",x[i][4],v[i][4]);
         }
+
     }
         //Right Heat Bath
         Kv[N_C-1][3] = force_bath(gama, k[2], x[N_C-1][3], x[N_C-2][3], v[N_C-1][3], V[1]);
         Kx[N_C-1][3] = dxdt(v[N_C-1][3]);
         v[N_C-1][4] = step_next(tau, v[N_C-1][0], Kv[N_C-1][0], Kv[N_C-1][1], Kv[N_C-1][2], Kv[N_C-1][3]) + sqrt(A[1]*tau)*epsd;
         x[N_C-1][4] = step_next(tau, x[N_C-1][0], Kx[N_C-1][0], Kx[N_C-1][1], Kx[N_C-1][2], Kx[N_C-1][3]);
-        if(tempo - (double)t*tau<time_print){
+
+
+        // We save the results after the transient time
+        if((double)t*tau>TransientTime){
             fprintf(file, ",%.8g,%.8g",x[N_C-1][4],v[N_C-1][4]);
         }
         /*---------------------------------------------------------------------------*/
@@ -229,7 +240,9 @@ int diode_srk4(char *name, double *x0, double *v0, int N_C, double gama, double 
             x[i][0]=x[i][4];
             v[i][0]=v[i][4];
         }
-        if(tempo - (double)t*tau<time_print){
+
+        // We save the results after the transient time
+        if((double)t*tau>TransientTime){
             fprintf(file, "\n");
         }
     }

@@ -1,6 +1,7 @@
 --- Simulation ---
 Time_step : 0.01
 Total_Simulation_Time : 125000.0
+Transient_Time : 100000.0
 
 --- System ---
 Number_of_Samples : 1

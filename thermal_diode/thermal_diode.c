@@ -21,6 +21,8 @@ Date: 01/04/2019
 #include "diode.h"
 #include "initial_conditions.h"
 
+
+
 int main(int argc, char **argv){
 
     /* ========================= Simulation Parameters ========================*/
@@ -31,8 +33,9 @@ int main(int argc, char **argv){
     
 
     /* simulation time */
-    const double timestep = 0.01; 
-    const double tempo = 125000.0;
+    const double timeStep = 0.01; 
+    const double timeRange = 125000.0;
+    const double timeTransient = 100000.0;
 
 
     /* Defining physical parameters of the chain*/
@@ -103,8 +106,9 @@ int main(int argc, char **argv){
                    drag_coefficient, 
                    Ext_Potential_Amp, 
                    poly_power, 
-                   timestep, 
-                   tempo, 
+                   timeStep, 
+                   timeRange,
+                   timeTransient
                    Baths_Amp, 
                    Spring_Const, 
                    semente);
