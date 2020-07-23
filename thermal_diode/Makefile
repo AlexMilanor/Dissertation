@@ -6,3 +6,12 @@ thermal_diode.o: thermal_diode.c
 
 clean:
 	rm thermal_diode.o thermal_diode
+
+teste_read_params: teste_read_params.o
+	gcc  -o ./teste_read_params ./teste_read_params.o 
+
+teste_read_params.o: teste_read_params.c
+	gcc -c ./teste_read_params.c -o ./teste_read_params.o
+
+clean_params:
+	rm teste_read_params.o teste_read_params
