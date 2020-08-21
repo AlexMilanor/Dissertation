@@ -19,7 +19,7 @@ int grab_index(const char **values_array, int array_size, char *string_to_find){
 
 }
 
-int main(int argc, char **argv){
+int get_input_params(int *values_system, double *values_simulations){
 
     // Arrays that gives the position of the variables
 
@@ -105,15 +105,6 @@ int main(int argc, char **argv){
 
                     int array_size = sizeof(PARAMS_PHYSICS)/sizeof(PARAMS_PHYSICS[0]);
                     int index = grab_index(PARAMS_PHYSICS, array_size, parameter);
-
-                    if (strcmp(parameter, "Left_Potential_Amplitude")){
-
-                        // we normalize the amplitude by dividing it by (4*M_PI*M_PI)
-                        value = value*M_1_PI*M_1_PI*0.25
-                        // for numerical reasons, we instead multiplied by (1/4)*(1/M_PI)*(1/M_PI)
-
-                    }
-
                     values_physics[index] = value;
 
                     printf("Physics: %s = %lf \n",parameter,values_physics[index]);
