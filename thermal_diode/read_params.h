@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <math.h>
 
 int grab_index(const char **values_array, int array_size, char *string_to_find){
 
@@ -19,27 +18,22 @@ int grab_index(const char **values_array, int array_size, char *string_to_find){
 
 }
 
-int get_input_params(int *values_system, double *values_simulations){
+void get_input_params(int *values_system, double *values_simulations, double *values_physics, char *values_files[]){
 
     // Arrays that gives the position of the variables
 
     const char *PARAMS_SYSTEM[2] = {"Number_of_Samples", "Number_of_Particles_in_the_chain"};
-    int values_system[2];
 
 
     const char *PARAMS_SIMULATION[3] = {"Time_step", "Total_Simulation_Time", "Transient_Time"};
-    double values_simulations[3];
 
 
     const char *PARAMS_PHYSICS[8] = {"Mean_Temperature", "Temperature_Difference_(%)", "Left_to_Right_Ratio",
                                     "Interphase_Spring_Constant", "Interphase_Polynomial_Power",
                                     "Left_Potential_Amplitude", "Left_Spring_Constant", "Drag_Coefficient"};
-    double values_physics[8];
 
 
     const char *PARAMS_FILES[3] = {"Data_Directory", "Output_filename", "Output_extension"};
-    char values_files[3][50];
-
 
 
 
