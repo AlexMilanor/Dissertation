@@ -113,7 +113,7 @@ int main(int argc, char **argv){
                    Spring_Const, 
                    semente);
 
-        printf("Fim da Simulação");
+        printf("Fim da Simulação\n");
 
     }
 
