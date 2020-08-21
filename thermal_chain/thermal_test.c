@@ -22,6 +22,7 @@ Date: 01/04/2019
 
 int main(int argc, char **argv){
 
+/* =========================  Define control variables =========================== */
     /* Auxiliary Variables*/
     int n, l; // Control variables
 
@@ -35,6 +36,7 @@ int main(int argc, char **argv){
         return 0;
     }
 
+/* ========================= Inicializando Parâmetros ============================= */
     /*Testing the number of particles inputted*/
     char *stop1;
     int arg1 = strtol(argv[1],&stop1,10);
@@ -119,7 +121,13 @@ int main(int argc, char **argv){
     v0[0] = 1.0;
     v0[number_of_particles-1] = 0.0;
 
-/* Running the Code */
+
+
+
+
+
+
+/* ====================== Run Simulation =========================== */
 
 /* Parallel programming */
 // omp_set_num_threads(threads); // Number of threads
