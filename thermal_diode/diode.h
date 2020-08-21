@@ -19,8 +19,8 @@ Date: 05/06/2019
 
 double potential(double x, double V){
     /* Force due to the external potential */
-    double a0=1; // external potential length
-    return -(V*2.0*M_PI/a0)*sin((2.0*M_PI/a0)*x);
+    double a0=1.0; // external potential length
+    return -(V*2.0*M_PI/a0)*sin(2.0*M_PI*x/a0);
 }
 
 double force_bath(double gamma, double k, double x0, double x1, double v0, double V){
