@@ -1,19 +1,19 @@
+--- System ---
+Number_of_Samples : 1
+Number_of_Particles_in_the_chain : 50
+
 --- Simulation ---
 Time_step : 0.01
 Total_Simulation_Time : 125000.0
 Transient_Time : 100000.0
 
---- System ---
-Number_of_Samples : 1
-Number_of_Particles_in_the_chain : 50
-
 --- Physics ---
 Mean_Temperature : 0.07
 Temperature_Difference_(%) : 1.0
-Left_to_Right_Ratio_: 1.0
+Left_to_Right_Ratio : 1.0
 Interphase_Spring_Constant : 1.0
 Interphase_Polynomial_Power : 2.0 
-Left_Potential_Amplitude : 5.0/(4.0*M_PI*M_PI) 
+Left_Potential_Amplitude : 5.0/(4.0*M_PI*M_PI)
 Left_Spring_Constant : 1.0 
 Drag_Coefficient : 1.0
 
