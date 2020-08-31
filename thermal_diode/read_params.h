@@ -2,6 +2,60 @@
 #include <stdio.h>
 #include <string.h>
 
+
+char *get_filename_extension(char *filename){
+    /*
+    Function that gets the extension written in the filename. Taken from stackoverflow.
+    Source:
+    https://stackoverflow.com/questions/5309471/getting-file-extension-in-c
+    */
+    char *dot = strrchr(filename, '.');
+    if (!dot || dot == filename) return "";
+    return dot+1;
+
+}
+
+// int file_exists(char *filename){
+//     /* 
+//     Function that checks if there is a file with a given filename and if we can read it.
+//     Source:
+//     https://stackoverflow.com/questions/230062/whats-the-best-way-to-check-if-a-file-exists-in-c
+//     */
+//     FILE *file;
+//     if ((file = fopen(filename, "r"))){
+//         fclose(file);
+//         return 1;
+//     }
+//     return 0;
+// }
+
+
+int valid_input(int arg_count, char *arg_values[]){
+    if (arg_count > 2){
+        printf("Only one input file accepted.\n");
+        return 0;
+    }
+    else if (arg_count != 2){
+        printf("No input file defined.\n");
+        return 0;
+    }
+    else {
+        char input_filename[100];
+        strcpy(input_filename, arg_values[1]);
+        
+        char *extension = get_filename_extension(input_filename, '.');
+
+        if (strcmp(extension,"txt")!=0){
+            printf("Extension not supported\n");
+            return 0;
+        }
+        else {
+            return 1;
+        }
+    }
+}
+
+
 int grab_index(const char **values_array, int array_size, char *string_to_find){
 
     for (int n=0 ; n <= array_size; n++) {
@@ -18,7 +72,11 @@ int grab_index(const char **values_array, int array_size, char *string_to_find){
 
 }
 
-void get_input_params(int *values_system, double *values_simulations, double *values_physics, char *values_files[]){
+int get_input_params(char *input_filename, 
+                      int *values_system, 
+                      double *values_simulations, 
+                      double *values_physics, 
+                      char *values_files[]){
 
     // Arrays that gives the position of the variables
 
@@ -37,25 +95,25 @@ void get_input_params(int *values_system, double *values_simulations, double *va
 
 
 
-    FILE * fr = fopen(argv[1], "rt");
+    FILE * fr = fopen(input_filename, "rt");
 
     // Checking if the file exists
     if (fr == NULL) {
-        printf("file %s not found\n", argv[1]);
+        printf("File %s not found.\n", input_filename);
     }
 
-    char section[50] = "---"; // name of the input_params section
-    char tempBuffer[50]; // temporary buffer with the line values
-    char parameter[50]; // name of the parameter to be defined
+    char section[100] = "---"; // name of the input_params section
+    char tempBuffer[100]; // temporary buffer with the line values
+    char parameter[100]; // name of the parameter to be defined
     double value; // value of the parameter defined in input_params
-    char value_string[50]; // value of parameters for the output files
+    char value_string[100]; // value of parameters for the output files
     int value_int; // value of parameters for chain and ensemble size
 
     // While not end of file
     while(!feof(fr)){
     
         // reads a line from the stream, save the number of characters in the line
-        fgets(tempBuffer,50,fr);
+        fgets(tempBuffer,100,fr);
         int length_tempBuffer = strlen(tempBuffer); 
 
         // if the line is not empty, we read it
