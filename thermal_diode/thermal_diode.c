@@ -7,10 +7,9 @@
 *********************************************
 
 Author: Alexandre A. A. Almeida
-Date: 01/04/2019
+First Created: 01/04/2019
 
 */
-
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -20,12 +19,25 @@ Date: 01/04/2019
 #include <string.h>
 #include "diode.h"
 #include "initial_conditions.h"
+#include "read_params.h"
 
+// Pi decimal expansion taken from the Online Encyclopedia of Integer Sequences
+// Source: http://oeis.org/A000796
+#ifndef M_PI
+#define M_PI 3.141592653589793238462643383279
+#endif /* M_PI */
+
+// 1/Pi decimal expansion taken from the Online Encyclopedia of Integer Sequences
+// Source: http://oeis.org/A049541
+#ifndef M_1_PI
+#define M_1_PI 0.318309886183790671537767526745
+#endif /* M_1_PI */
 
 
 int main(int argc, char **argv){
 
     /* ========================= Simulation Parameters ========================*/
+
 
     /* system parameters */
     const int number_of_samples = 1; 
@@ -48,7 +60,7 @@ int main(int argc, char **argv){
 
 
     /* External Potential */
-    const double left_ext_potential_amp = 5.0/(4.0*M_PI*M_PI);
+    const double left_ext_potential_amp = 5.0*0.25*M_1_PI*M_1_PI; // 0.25*M_1_PI*M_1_PI is dividing by (2\pi)^2
     const double right_ext_potential_amp = chains_ratio*left_ext_potential_amp; 
     double Ext_Potential_Amp[2] = {left_ext_potential_amp, right_ext_potential_amp};
 
