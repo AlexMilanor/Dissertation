@@ -17,6 +17,19 @@ Date: 05/06/2019
 #include <gsl_randist.h>
 #include <math.h>
 
+// Pi decimal expansion taken from the Online Encyclopedia of Integer Sequences
+// Source: http://oeis.org/A000796
+#ifndef M_PI
+#define M_PI 3.141592653589793238462643383279
+#endif /* M_PI */
+
+// 1/Pi decimal expansion taken from the Online Encyclopedia of Integer Sequences
+// Source: http://oeis.org/A049541
+#ifndef M_1_PI
+#define M_1_PI 0.318309886183790671537767526745
+#endif /* M_1_PI */
+
+
 double potential(double x, double V){
     /* Force due to the external potential */
     double a0=1.0; // external potential length

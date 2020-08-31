@@ -21,19 +21,6 @@ First Created: 01/04/2019
 #include "initial_conditions.h"
 #include "read_params.h"
 
-// Pi decimal expansion taken from the Online Encyclopedia of Integer Sequences
-// Source: http://oeis.org/A000796
-#ifndef M_PI
-#define M_PI 3.141592653589793238462643383279
-#endif /* M_PI */
-
-// 1/Pi decimal expansion taken from the Online Encyclopedia of Integer Sequences
-// Source: http://oeis.org/A049541
-#ifndef M_1_PI
-#define M_1_PI 0.318309886183790671537767526745
-#endif /* M_1_PI */
-
-
 int main(int argc, char *argv[]){
 
     /* 
