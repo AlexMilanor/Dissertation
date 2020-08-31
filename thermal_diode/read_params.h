@@ -15,19 +15,19 @@ char *get_filename_extension(char *filename){
 
 }
 
-// int file_exists(char *filename){
-//     /* 
-//     Function that checks if there is a file with a given filename and if we can read it.
-//     Source:
-//     https://stackoverflow.com/questions/230062/whats-the-best-way-to-check-if-a-file-exists-in-c
-//     */
-//     FILE *file;
-//     if ((file = fopen(filename, "r"))){
-//         fclose(file);
-//         return 1;
-//     }
-//     return 0;
-// }
+int file_exists(char *filename){
+    /* 
+    Function that checks if there is a file with a given filename and if we can read it.
+    Source:
+    https://stackoverflow.com/questions/230062/whats-the-best-way-to-check-if-a-file-exists-in-c
+    */
+    FILE *file;
+    if ((file = fopen(filename, "r"))){
+        fclose(file);
+        return 1;
+    }
+    return 0;
+}
 
 
 int valid_input(int arg_count, char *arg_values[]){
@@ -50,7 +50,12 @@ int valid_input(int arg_count, char *arg_values[]){
             return 0;
         }
         else {
-            return 1;
+            if (file_exists(input_filename)){
+                return 1;
+            }
+            else {
+                return 0;
+            }
         }
     }
 }
