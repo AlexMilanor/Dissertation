@@ -43,7 +43,7 @@ int valid_input(int arg_count, char *arg_values[]){
         char input_filename[100];
         strcpy(input_filename, arg_values[1]);
         
-        char *extension = get_filename_extension(input_filename, '.');
+        char *extension = get_filename_extension(input_filename);
 
         if (strcmp(extension,"txt")!=0){
             printf("Extension not supported\n");
@@ -81,7 +81,7 @@ int get_input_params(char *input_filename,
                       int *values_system, 
                       double *values_simulations, 
                       double *values_physics, 
-                      char *values_files[]){
+                      char (*values_files)[100]){
 
     // Arrays that gives the position of the variables
 

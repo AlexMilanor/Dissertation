@@ -39,12 +39,12 @@ int main(int argc, char *argv[]){
     char input_filename[100];
     strcpy(input_filename, argv[1]);
 
-    int values_system[2]
-    double values_simulations[3]
-    double values_physics[8]
+    int values_system[2];
+    double values_simulations[3];
+    double values_physics[8];
     char values_files[3][100];
 
-    get_input_params(input_filename, values_system, values_simulations, values_physics, values_files)
+    get_input_params(input_filename, values_system, values_simulations, values_physics, values_files);
 
     /* Position of each variable in the arrays:
 
