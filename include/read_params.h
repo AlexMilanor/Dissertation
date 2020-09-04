@@ -77,6 +77,24 @@ int grab_index(const char **values_array, int array_size, char *string_to_find){
 
 }
 
+int get_potential(char *potential_name, int potential){
+
+    if (potential==0){
+        strcpy(potential_name,"none");
+    }
+    else if (potential==1){
+        strcpy(potential_name,"cosine");
+    }
+    else if (potential==2){
+        strcpy(potential_name,"phi4");
+    }
+    else {
+        strcpy(potential_name,"none");
+    }
+
+    return 0;
+}
+
 int get_input_params(char *input_filename, 
                       int *values_system, 
                       double *values_simulations, 
@@ -85,7 +103,7 @@ int get_input_params(char *input_filename,
 
     // Arrays that gives the position of the variables
 
-    const char *PARAMS_SYSTEM[2] = {"Number_of_Samples", "Number_of_Particles_in_the_chain"};
+    const char *PARAMS_SYSTEM[3] = {"Number_of_Samples", "Number_of_Particles_in_the_chain", "Potential"};
 
 
     const char *PARAMS_SIMULATION[3] = {"Time_step", "Total_Simulation_Time", "Transient_Time"};
@@ -152,7 +170,7 @@ int get_input_params(char *input_filename,
                     int index = grab_index(PARAMS_SIMULATION, array_size, parameter);
                     values_simulations[index] = value;
 
-                    printf("Simulation: %s = %lf \n",parameter,values_simulations[index]);
+                    printf("Simulation: %s = %.12lf \n",parameter,values_simulations[index]);
                 }
 
                 // for the Physics section, get the physical parameters of the system
@@ -164,7 +182,7 @@ int get_input_params(char *input_filename,
                     int index = grab_index(PARAMS_PHYSICS, array_size, parameter);
                     values_physics[index] = value;
 
-                    printf("Physics: %s = %lf \n",parameter,values_physics[index]);
+                    printf("Physics: %s = %.14lf \n",parameter,values_physics[index]);
                 }
 
                 // for the Files section, get the output file parameters

@@ -17,9 +17,9 @@ First Created: 01/04/2019
 #include <gsl_randist.h>
 #include <math.h>
 #include <string.h>
-#include "diode.h"
-#include "initial_conditions.h"
-#include "read_params.h"
+#include "../include/diode.h"
+#include "../include/initial_conditions.h"
+#include "../include/read_params.h"
 
 int main(int argc, char *argv[]){
 
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
 
     /* Position of each variable in the arrays:
 
-    PARAMS_SYSTEM = {0:"Number_of_Samples", 1:"Number_of_Particles_in_the_chain"};
+    PARAMS_SYSTEM = {0:"Number_of_Samples", 1:"Number_of_Particles_in_the_chain", 2:"Potential"};
 
     PARAMS_SIMULATION = {0:"Time_step", 1:"Total_Simulation_Time", 2:"Transient_Time"};
 
@@ -67,6 +67,10 @@ int main(int argc, char *argv[]){
     /* system parameters */
     const int number_of_samples = values_system[0]; 
     const int number_of_particles = values_system[1];
+    const int potential = values_system[2];
+
+    char potential_name[100];
+    get_potential(potential_name, potential);
     
 
     /* simulation time */
@@ -150,7 +154,8 @@ int main(int argc, char *argv[]){
         semente[0] = (2*n) + 1;
         semente[1] = (2*n);
         
-        diode_srk4(archname, 
+        diode_srk4(archname,
+                   potential_name,
                    x_0, v_0, number_of_particles, 
                    drag_coefficient, 
                    Ext_Potential_Amp, 

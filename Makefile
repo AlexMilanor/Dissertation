@@ -1,0 +1,17 @@
+.PHONY: clean
+
+thermal_diode: src/thermal_diode.o
+	gcc  -o ./thermal_diode ./src/thermal_diode.o -lm -L/usr/lib/x86_64-linux-gnu/ -lgsl -lgslcblas
+
+src/thermal_diode.o: src/thermal_diode.c
+	gcc -I/usr/include/gsl -c ./src/thermal_diode.c -o ./src/thermal_diode.o
+
+
+tests/test_read_params: tests/test_read_params.o
+	gcc  -o ./tests/test_read_params ./tests/test_read_params.o 
+
+tests/test_read_params.o: tests/test_read_params.c
+	gcc -c ./tests/test_read_params.c -o ./tests/test_read_params.o
+
+clean:
+	rm src/thermal_diode.o tests/test_read_params.o
