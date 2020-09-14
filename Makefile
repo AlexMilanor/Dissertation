@@ -1,7 +1,7 @@
 .PHONY: clean
 
 thermal_diode: src/thermal_diode.o
-	gcc  -o ./thermal_diode ./src/thermal_diode.o -lm -L/usr/lib/x86_64-linux-gnu/ -lgsl -lgslcblas
+	gcc -static -o ./thermal_diode ./src/thermal_diode.o -L/usr/lib/x86_64-linux-gnu/ -lgsl -lgslcblas -lm
 
 src/thermal_diode.o: src/thermal_diode.c
 	gcc -I/usr/include/gsl -c ./src/thermal_diode.c -o ./src/thermal_diode.o
