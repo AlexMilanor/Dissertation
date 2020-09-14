@@ -54,6 +54,7 @@ phi_4_potential(double x, double k)
     return -k*pow(x,3);
 }
 
+
 double (*potential)(double x, double A);
 
 
@@ -89,7 +90,7 @@ double
 force_bath(double gamma, double k, double x0, double x1, double v0, double V)
 {
     /* Defining the deterministic forces on the Langevin Bath */
-    return -gamma*v0 - k*(x0 - x1) + potential(x0, V);
+    return -gamma*v0 - k*(x0 - x1) - k*x0 + potential(x0, V);
 }
 
 
@@ -108,13 +109,25 @@ force(double k1, double k2, double x0, double x1, double x2, double V)
     return spring_force(k1, x1, x0) + spring_force(k2, x1, x2) + potential(x1, V);
 }
 
+double
+sign(double x)
+{
+    if (x >= 0.0)
+    {
+        return 1.0;
+    }
+    else 
+    {
+        return -1.0;
+    }
+}
 
 double 
 inter_force(double k, double mu, double x1, double x2)
 {
     /* Force in the interphase of the left and right chain */
     double force_interf;
-    force_interf = -k*pow(fabs(x1 - x2),mu-2.0)*(x1-x2);
+    force_interf = -k*sign(x1-x2)*pow(fabs(x1 - x2),mu-1.0);
     return force_interf;
 }
 
@@ -197,7 +210,8 @@ update_mean(double prev_mean, double point, double n_th)
     "Algorithms for Computing the Sample Variance: Analysis and Recommendations", Chan et al., 1983
     */
     double new_mean;
-    new_mean = prev_mean + (1.0/n_th)*(point-prev_mean);
+    // new_mean = prev_mean + (1.0/n_th)*(point-prev_mean);
+    new_mean = prev_mean + point;
     return new_mean;
 }
 
@@ -273,6 +287,7 @@ diode_srk4(char *filename, char *potential_name,
 
     /*
     Maind code for running the 4th order Stochastic Runge Kutta (SRK4).
+    ----------------------------------------
     char *filename: filename of the file
     double *x0: initial conditions for position
     double *v0: initial conditions for velocity
@@ -438,6 +453,8 @@ diode_srk4(char *filename, char *potential_name,
         }
         /* -------------------------------------------------------------------- */
 
+        //x(t+d) = x(t) + (1/3)*(0.5*K_0 + K_1 + K_2 + 0.5*K_3)*d + (1/3)*(0.5*M_0z + M_1z + M_2z + 0.5*M_3z) 
+
 
         /* ------------ Fourth Step (Getting x(t+delta)) ------------------------*/
 
@@ -503,27 +520,23 @@ diode_srk4(char *filename, char *potential_name,
             for (int i=0;i<N_C;i++)
             {
 
-                Temp[i] = pow(v[0][0],2.0);
+                Temp[i] = pow(v[i][0],2.0);
 
                 if (i == 0)
                 {
                     J_flux[i]=0.0;
                 }
-                else if (i < N_C/2 - 1)
+                else if (i <= N_C/2 - 1)
                 {
-                    J_flux[i] = v[i][4]*spring_force(k[0], x[i-1][4], x[i][4]);
-                }
-                else if(i == N_C/2 - 1)
-                {
-                    J_flux[i] = v[i][4]*spring_force(k[0], x[i-1][4], x[i][4]);
+                    J_flux[i] = 0.5*(v[i][4]+v[i-1][4])*spring_force(k[0], x[i-1][4], x[i][4]);
                 }
                 else if(i == N_C/2)
                 {
-                    J_flux[i] = v[i][4]*inter_force(k[1], mu, x[i-1][4], x[i][4]);
+                    J_flux[i] = 0.5*(v[i][4]+v[i-1][4])*inter_force(k[1], mu, x[i-1][4], x[i][4]);
                 }
                 else if(i > N_C/2)
                 {
-                    J_flux[i] = v[i][4]*spring_force(k[2], x[i-1][4], x[i][4]);
+                    J_flux[i] = 0.5*(v[i][4]+v[i-1][4])*spring_force(k[2], x[i-1][4], x[i][4]);
                 }
 
                 if (!initialized_outputs[i])
@@ -559,6 +572,11 @@ diode_srk4(char *filename, char *potential_name,
     }
 
     // Now we save the simulation results
+    divide_vector_by_value(x_mean, N_C, time_points - transient_point);
+    divide_vector_by_value(v_mean, N_C, time_points - transient_point);
+    divide_vector_by_value(T_mean, N_C, time_points - transient_point);
+    divide_vector_by_value(J_mean, N_C, time_points - transient_point);
+
     write_vector_to_row("x_mean", x_mean, N_C, file);
     write_vector_to_row("v_mean", v_mean, N_C, file);
     write_vector_to_row("T_mean", T_mean, N_C, file);
