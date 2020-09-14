@@ -108,17 +108,6 @@ int main(int argc, char *argv[]){
     const double right_amp = 2.0*drag_coefficient*right_temp; // Noise amplitude in the right bath
     double Baths_Amp[2] = {left_amp, right_amp};
 
-    /*
-    =================== Initialize velocity and position ==================
-    */
-
-    /* Initial Values */
-    double x_0[number_of_particles];
-    double v_0[number_of_particles];
-
-    initialize_positions(x_0, number_of_particles);
-    initialize_velocities(v_0, number_of_particles, temp_mean);
-
 
     /* 
     ===================== Simulations ===========================
@@ -126,6 +115,18 @@ int main(int argc, char *argv[]){
 
     for (int n=1 ; n <= number_of_samples; n++) {
 
+        /*
+        =================== Initialize velocity and position ==================
+        */
+
+        /* Initial Values */
+        double x_0[number_of_particles];
+        double v_0[number_of_particles];
+
+        initialize_positions(x_0, number_of_particles);
+        initialize_velocities(v_0, number_of_particles, temp_mean);
+
+        
         /* ==================== Simulation control variables ========================= */
         /* Defining output filename */        
         char data_dir[100]; // Name of directory
@@ -167,7 +168,7 @@ int main(int argc, char *argv[]){
                    Spring_Const, 
                    semente);
 
-        printf("Fim da Simulação\n");
+        printf("Fim da Simulação %d\n",n);
 
     }
 
