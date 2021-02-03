@@ -2,112 +2,69 @@
 
 \chapter{Modelling Heat Flow}
 
-\section{1D Heat Transport}
+\section{Toy Models}
 
-Before diving in the microscopic models, let us first describe the basic heat flow problem from a macroscopic point of view so that afterwards it can be compared to our toy model. Suppose we have a solid bar with length $ L $, cross sectional area $ A $ and thermal conductivity $ \kappa $ in contact with two thermal baths, one on each side and with temperatures $ T_{1},T_{2} $ such that $ T_{1} > T_{2} $.
-
-\begin{figure}[H] 
-		\centering 
-		\fontsize{18}{14} 
-		\scalebox{0.8}{\incfig{ch2_1}} 
-		\label{ch2_1} 
-		\caption{one dimensional heat transport}
-\end{figure} 
+(best to put something more generic)
 
 
-We further assume that $ L^{2} \gg A $, the lateral surface of the bar is isolated from the environment and $ \kappa $ does not vary with temperature. In this case Fourier's law takes the form
-\[ \dot{Q} = -\kappa \frac{d T}{d x}. \]
+(Put some results on heat transport in this chapter)
 
-It is expected that, as time goes to infinity, our system approaches a steady state where the heat flux $ \dot{Q} $ is constant, and as such we can use the boundary conditions $ T(x=0)=T_{1} $ and $ T(x=L)=T_{2} $ to integrate our function and get
-\[ T = - \frac{(T_{1}-T_{2})}{L}\cdot x + T_{1}, \]
-showing that the temperature profile along the bar in the steady state is linear.
+(we don't need to say that are springs that follows Hooke's law. Try to be more general)
+
+A naive first idea for modeling this situation with the use of classical mechanics would be to replace the bar by a chain of particles with first-neighbors interaction through a harmonic potential.
 
 \begin{figure}[H] 
-		\centering 
-		\fontsize{26}{14} 
-		\scalebox{0.6}{\incfig{ch2_2}} 
-		\label{ch2_2} 
-		\caption{linear temperature profile.}
+	\centering 
+	\fontsize{18}{14} 
+	\scalebox{0.8}{\incfig{ch2_3}} 
+	\label{ch2_3} 
+	\caption{pictorial representation of the mathematical model}
 \end{figure} 
 
-
-It is also possible to use the heat equation to look at the dynamics of the system and see the evolution of the system as $ t\to \infty $. In fact, if we divide the bar in small slabs of size $ \Delta x $ (partition the interval $ [0,L] $ in intervals $ [x,x+\Delta x] $) and then use the first law of thermodynamics to approximate for a given slab
-\[ 
-	(\dot{Q}(t,x) - \dot{Q}(t,x+\Delta x))A\Delta t = 
-	(u(t+\Delta t,x) - u(t,x)) A \Delta x,
-\]
-where $ u $ is the specific internal energy of the bar (considered homogeneous), then
-\[ 
-	-\frac{\partial \dot{Q}}{\partial x} = 
-	\frac{\partial u }{\partial t}
- \]
-in the limit $ \Delta x\to 0, \Delta t\to 0$. Now using the concept of specific heat capacity we could write $ u = C\rho T $, and so
-\[ 
-	-\frac{\partial \dot{Q}}{\partial x} = 
-	C \rho \frac{\partial T }{\partial t},
- \]
-which together with Fourier's law gives us the heat equation
-\[ 
-	\frac{\partial^{2} T}{\partial x^{2}} = 
-	\alpha^{2} \frac{\partial T }{\partial t},
-\]
-where the definition $ \alpha^{2} = C \rho / \kappa $ was used. Considering that the bar have an initial temperature profile $ f(x) $, its solution is given by
-\[ 
-	T(x,t) = - \frac{(T_{1} - T_{2})}{L}\cdot x + T_{1} +
-	\sum_{n=1}^{\infty} c_{n} e^{-(n\pi\alpha/L)^{2} t}
-	\sin \left( \frac{n\pi x}{L} \right),
-\]
-where
-\[ 
-	c_{n} = \frac{2 }{L }\int_{0}^{L} 
-	\left[ f(x) - \frac{(T_{2} - T_{1})}{L}\cdot x - T_{1}\right]
-	\sin \left(\frac{n\pi x }{L}\right)dx,
- \]
-from which it can be seen that the transient part goes to zero exponentially with characteristic time $ \tau \propto L^{2}/\alpha^{2} $.
-
-\section{Toy Model}
-
-A naive first idea for modeling this situation with the use of classical mechanics would be to replace the bar by a chain of particles with first-neighbors interaction through an harmonic potential.
-
-\begin{figure}[H] 
-		\centering 
-		\fontsize{18}{14} 
-		\scalebox{0.8}{\incfig{ch2_3}} 
-		\label{ch2_3} 
-		\caption{pictorial representation of the mathematical model}
-\end{figure} 
-
-Along this text, many changes to this simple toy model will be discussed, but it is already worth noting that the failure of this model to reproduce the temperature profile given by Fourier's law has been known for some time (\cite{riederPropertiesHarmonic1967}) and nonlinear terms are needed to achieve this. The main toy model used in this work will be the so called Frenkel-Kontorova Model which add an external oscillating potential on the particles. 
+Many changes to this simple toy model will be discussed throughout the text, but it is already worth noting that the failure of this model to reproduce the temperature profile given by Fourier's law has been known for some time (\cite{riederPropertiesHarmonic1967}) and nonlinear terms are needed to achieve this. The main toy model used in this work will be the so-called Frenkel-Kontorova Model which adds an external oscillating potential on the particles. 
 
 There many ways to simulate a constant temperature thermal baths in the literature and the one considered here will be using the dynamics of the Langevin equation.
 
+(instead of k(x1-x2), put a Force F(xi-1, xi, xi+1), something more generic)
+
+(We will discuss here that we use Langevin, but after we remember that there are other methods, and the result should not depend on the specific bath chosen)
+
 The equations of motion will then be
 \begin{equation}\label{eq:1}
-	\begin{aligned}
-	&\frac{d v_1}{dt} = -\gamma v_1 + \eta_1(t) -k\left(x_1 - x_2\right),\\
-	&\frac{d v_i}{dt} = -k\left(2x_i - x_{i-1} - x_{i+1}\right),\\
-	&\frac{d v_N}{dt} = -\gamma v_N + \eta_N(t) -k\left(x_N - x_{N-1}\right),
-	\end{aligned}
+\begin{aligned}
+&\frac{d v_1}{dt} = A_{bath}(x_{1},v_{1},t) + F(x_1, x_2),\\
+&\frac{d v_i}{dt} = F_{i-1,i}(x_{i-1}, x_i) + F_{i,i+1}(x_{i}, x_{i+1}),\\
+&\frac{d v_N}{dt} = A_{bath}(x_{N}, v_{N}, t) + F(x_{N-1}, x_N),
+\end{aligned}
 \end{equation}
+
+(Here what is important is that the middle are not affected by the thermal baths terms directly)
 
 
 Both the chain of particles and the heat baths shall be further discussed in the next sections.
 
 \section{Heat Baths}
 
-In an equilibrium situation there are many techniques which are used to try and maintain the system at constant temperature, such as re-scaling the particle velocities in each time step, changing the Hamiltonian of the thermal bath particles \cite{noseUnifiedFormulation1984} and using stochastic equations to describe the thermal noise \cite{lepriThermalConduction2003}.
+In an equilibrium situation, many techniques are used to try and maintain the system at a constant temperature, such as re-scaling the particle velocities in each time step, changing the Hamiltonian of the thermal bath particles \cite{noseUnifiedFormulation1984}, and using stochastic equations to describe the thermal noise \cite{lepriThermalConduction2003}.
 
 When trying to model low dimensional heat transfer, there are two main types of heat baths used, the Nose-Hoover thermostat and Langevin heat baths \cite{lepriThermalConduction2003}.
 
-\subsection{Nose-Hoover Thermostat}
+\subsection{Nose-Hoover thermostat}
+
+(Nose-Hoover is a deterministic equation, other implementation)
 
 The Nose-Hoover thermostat consists of adding one more degree of freedom $ s $, along with its conjugated momentum $ p_{s} $, which represents somewhat an external system \cite{noseUnifiedFormulation1984}. Using the same notation as in \cite{evansNoseHoover1985}, let $ H_{0} $ be the classical many body Hamiltonian of the particle, the \textit{Nose Hamiltonian} is then defined as
 \[ H_{N} = H_{0}(q, p/s) + gKT\ln{s} + \frac{p_{s}^{2}}{2Q}, \]
-where $ g $ is the system's degrees of freedom and $ Q $ is a parameter 
+where $ g $ is the system's degrees of freedom and $ Q $ is a parameter
 
-\subsection{Langevin Equation}
+We use the stochastic approach with the Langevin equation. 
 
-In the XIX century the botanist Robert Brown studied what is now called the \textit{Brownian motion} which is the seemingly random motion of pollen grains in a viscous media such as water or acetone \cite{nelsonDynamicalTheories2001}. Paul Langevin tried to explain the phenomena using Newton's second law in 1908 by adding a random force which nowadays we recognize as being a Wiener random process and thus devising the so called Langevin equation \cite{lemonsPaulLangevin1997}.
+\subsection{Langevin thermostat}
+
+(try to avoid putting everything with upper case letters!!!!)
+
+
+In the XIX century, the botanist Robert Brown studied what is now called the \textit{Brownian motion} which is the seemingly random motion of pollen grains in a viscous media such as water or acetone \cite{nelsonDynamicalTheories2001}. Paul Langevin tried to explain the phenomena using Newton's second law in 1908 by adding a random force that nowadays we recognize as being a Wiener random process and thus devising the Langevin equation \cite{lemonsPaulLangevin1997}.
 
 Such an equation can be written as
 \[ m\ddot{r} = -\gamma \dot{r} + \eta,\]
@@ -117,10 +74,10 @@ The solution of a particle that only follows this simple equation is already wel
 
 Let the Langevin equation in one dimension be rewritten as the system of equations
 \begin{equation}
-		\begin{aligned}
-		&\frac{dv}{dt} = -\gamma v + \eta\left(t\right); \\
-		&\frac{dx}{dt} = v;
-		\end{aligned}
+\begin{aligned}
+&\frac{dv}{dt} = -\gamma v + \eta\left(t\right); \\
+&\frac{dx}{dt} = v;
+\end{aligned}
 \end{equation}
 where $\eta\left(t\right)$ is a gaussian stochastic process defined by the autocorrelation function
 $$ \left< \eta\left(t\right) \eta\left(t'\right)\right> = \Gamma \delta\left(t - t'\right), $$ 
@@ -128,14 +85,14 @@ $ v $ is the particle velocity and $ x $ is the particle position. Since $ \eta 
 
 It can be shown that the following equations are valid for the mean and variance of the position and velocity:
 
-\begin{equation}
-\begin{aligned}
-	&\left<x(t)\right> = x_{0} + \frac{v_{0}}{\gamma}\left(1 - e^{-\gamma t}\right); \\
-	&\sigma_{x}^{2} = \frac{\Gamma}{\gamma^{2}} \left(t - \frac{2}{\gamma}(1-e^{-\gamma t}) + \frac{1}{2\gamma}\left(1-e^{-2\gamma t}\right) \right); \\
-	&\left<v(t)\right> = v_{0} e^{-\gamma t}; \\
-	&\sigma_{v}^{2} = \frac{\Gamma}{2\gamma} \left(1 - e^{-2\gamma t}\right)
-\end{aligned}
-\end{equation}
+%\begin{equation}
+%\begin{aligned}
+%&\left<x(t)\right> = x_{0} + \frac{v_{0}}{\gamma}\left(1 - e^{-\gamma t}\right); \\
+%&\sigma_{x}^{2} = \frac{\Gamma}{\gamma^{2}} \left(t - \frac{2}{\gamma}(1-e^{-\gamma t}) + \frac{1}{2\gamma}\left(1-e^{-2\gamma t}\right) \right); \\
+%&\left<v(t)\right> = v_{0} e^{-\gamma t}; \\
+%&\sigma_{v}^{2} = \frac{\Gamma}{2\gamma} \left(1 - e^{-2\gamma t}\right)
+%\end{aligned}
+%\end{equation}
 
 The parameters that describe this equation can also be related to the macroscopic thermodynamic variables describing the system. In the limit when $t \rightarrow \infty$ it achieves equilibrium and from the previous equations the ensemble average will be
 $$ \left< v^{2} \right> = \frac{\Gamma}{2\gamma} $$
@@ -144,19 +101,25 @@ $$ \frac{1}{2} m \left< v^{2} \right> = \frac{1}{2}k_{B}T, $$
 result that can be replaced in the previous equation to show that
 $$ \Gamma = \frac{2\gamma k_{B}T}{m}.$$
 
+(maybe do this development by text)
+
+(Green kubo is interesting, but no time)
+
 The asymptotic behavior of the position's variance relates with the diffusion coefficient such that
 $$ 2D = \frac{\Gamma}{\gamma^2}, $$
 $$ D = \frac{k_{B}T}{m\gamma}. $$
 
 \section{Particle chain}
 
-Introductory texts in solid state physics commonly use the picture of a solid as being composed of many classical particles interacting with their first neighbors through springs that follows Hooke's law as a first toy model to explain the effect of lattice vibrations in some phenomena such as the law of Dulong and Petit \cite{ashcroftSolidState1976}.
+(here we can rewrite F using Hooke's law)
 
-Such an idea is commonly developed on the basis of two main assumptions, namely the small oscillations assumption that the atoms that constitute the solid only show small displacements from their equilibrium position and the harmonic approximation assumption that these small oscillations can be well described by a Taylor expansion up to second order.
+Introductory texts in solid-state physics commonly use the picture of a solid as being composed of many classical particles interacting with their first neighbors through springs that follows Hooke's law as a first toy model to explain the effect of lattice vibrations in some phenomena such as the law of Dulong and Petit \cite{ashcroftSolidState1976}.
 
-Although the first assumption is a good enough approximation, the second fails to explain both equilibrium properties such as thermal expansion and transport properties such as thermal conductivity.
+Such an idea is commonly developed based on two main assumptions, namely the small oscillations assumption that the atoms that constitute the solid only show small displacements from their equilibrium position and the harmonic approximation assumption that these small oscillations can be well described by a Taylor expansion up to second order.
 
-In fact in a paper from 1966 Z. Rieder, J. L. Lebowitz and E. Lieb showed, using a generalized form of the Liouville Equation, that such an harmonic crystal in a stationary state between two heat baths of unequal temperatures actually shows a flat temperature profile along the chain with average bath temperature. They used the kinetic energy of the particles as a proxy for the temperature (the kinetic temperature) \cite{riederPropertiesHarmonic1967}.
+Although the first assumption is a good enough approximation, the second fails to explain both equilibrium properties such as thermal expansion, and transport properties such as thermal conductivity.
+
+In fact in a paper from 1966 Z. Rieder, J. L. Lebowitz, and E. Lieb showed, using a generalized form of the Liouville Equation, that such a harmonic crystal in a stationary state between two heat baths of unequal temperatures shows a flat temperature profile along the chain with average bath temperature. They used the kinetic energy of the particles as a proxy for the temperature (the kinetic temperature) \cite{riederPropertiesHarmonic1967}.
 
 (Discuss the solution of the corresponding Fokker Planck equation in \cite{lepriThermalConduction2003})
 
@@ -164,9 +127,16 @@ In fact in a paper from 1966 Z. Rieder, J. L. Lebowitz and E. Lieb showed, using
 
 (How to introduce the first models that work?)
 
+(Try to discuss harmonic, FPUT - both of which doesn't follow Fourier - quartic and frenkel kontorova)
+
+(Maybe cite Carlos Olivarez, because his was a more general case of ours)
+
+
 \subsection{Anharmonic models}
 
 > Fermi Pasta Ulam Tsingou
+
+(this is not a quartic pinning, its a quartic interaction between neighbors)
 
 \subsection{The Frenkel-Kontorova Model}
 
@@ -237,6 +207,18 @@ Rewriting,
 &\frac{dp_i}{dt} = -k_{i}(q_{i}-q_{i-1}) - k_{i}(q_{i} - q_{i+1}) - 
 \frac{2\pi V_{0,i}}{a_s}\sin \left(\frac{2\pi q_i}{a_s}\right)
 \end{align*}
+
+\[ 
+\mathcal{H} = \sum_{n=1}^{N}\frac{p_{n}^{2} }{2m_{n} } + 
+\frac{k_{n} }{2 }\left(x_{n}-x_{n-1}-a \right)^{2} +
+V_{0,n}\left[1-\cos \left(\frac{2\pi x_{n}}{a_{s}}\right)\right],
+\]
+where $ x_{n} $ denotes the position of the $ n-th $ particle. However, we can remove the distance $ a $ between equilibrium positions from the hamiltonian by using the displacement from equilibrium $ q_{n} = x_{n}-n\cdot a $ and assuming that the minima from the periodic potential coincides with the equilibrium positions (said another way, $ a/a_{s}\in \mathbb{N} $), we rewrite our equation as
+\[ 
+\mathcal{H} = \sum_{n=1}^{N}\frac{p_{n}^{2} }{2m_{n} } + 
+\frac{k_{n} }{2 }\left(q_{n}-q_{n-1}\right)^{2} +
+V_{0,n}\left[1-\cos \left(\frac{2\pi q_{n}}{a_{s}}\right)\right],
+\]
 
 %To make a thermal diode, we make so that the first $ N/2 $ particles have parameters $ k_i = k_{L}, V_{0,i} = V_{L} $ while the other half have different parameters $ k_i = k_{R}, V_{0,i} = V_{R} $, and connect the two halves by yet a third spring constant, $ k_{int} $.
 
@@ -755,3 +737,22 @@ Rewriting,
 %Mecânica Analítica - Nivaldo A. Lemos
 
 \section{Thermal Diode}
+
+Try to make something more general, so always try to describe in greater generality.
+
+Always go from "General" => "Particular"
+
+Show the results we have for Kontorova too, it is interesting.
+
+But we can discuss it at the end of the thermal diode part.
+
+REMEMBER TO DISCUSS THE FIXED BOUNDARY CONDITIONS.
+
+Show Fourier's law.
+
+For the $ \phi^{4} $, the results are known. But for Frenkel Kontorova, we don't know.
+
+
+\subsection{Assymetry}
+
+\subsection{Interphase Potential}

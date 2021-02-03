@@ -1,0 +1,384 @@
+% -*- coding: utf-8; -*-
+
+\chapter{Results}
+
+In chapter 2 we have discussed the main building blocks for a simple toy model that reproduce the same linear temperature profile as a diffusion problem following Fourier's law, and we have also discussed how the rectification of heat current can come from asymmetries in the particle chain. Now we shall put everything together and see how some of them affect the rectification of the heat current, focusing mainly on changing the parameters for the interphase potential. 
+
+The Hamiltonian of the chain of particles will be
+\[ 
+\mathcal{H} = \sum_{n=1}^{N}
+\frac{p_{n}^{2} }{2m_{n} }
++ U_{int,n}(q_{n}, q_{n-1})
++ U_{ext,n}(q_{n}),
+\]
+and we then find the dynamics of the system by means of Hamilton's equations.
+
+The chain is always assumed to be composed of two parts, a left one consisting of particles $ n\leq N/2 $ and a right one for particles $ n > N/2 $ and although the functional form of the potentials for each one will be the same, their parameters will be different.
+
+For the first neighbor interaction potential inside each part, we used the harmonic potential $ U_{int} = k_{n}\left(q_{n}-q_{n-1}\right)^{2}/2 $, where $ k_{n}=k_{L} $ for particles on the left chain and $ k_{n}=k_{R} $ for the ones on the right chain, while the interphase interaction between them was described by a power law potential
+\[
+U_{int}(q_{N/2}, q_{N/2+1}) =  
+\frac{k_{\mu} }{\mu }\left|q_{N/2}-q_{N/2+1}\right|^{\mu}.
+\]
+
+For the external potential $ U_{ext,n}(q_{n}) $ we first used the Frenkel-Kontorova potential 
+\[ 
+U_{ext,n} = V_{n}\left[1 - \cos \left( \frac{2\pi q_{n}}{a_{s}}\right)\right],
+\]
+and afterwards the $ \phi^{4} $ potential
+\[ 
+U_{ext,n} = \frac{V_{n}}{4}q_{n}^{4}
+\]
+was used, which showed better convergence properties. In both cases we consider that $ V_{n}=V_{L} $ for $ n\leq N/2 $ and $ V_{n}=V_{R} $.
+
+The thermal baths have temperatures $ T_{L} $ and $ T_{R} $ and are in contact with particles $ 1 $ and $ N $, respectively. They are modeled as Langevin heat baths by the addition of a drag force $ -\gamma p_{n}/m_{n} $ and white noises $ \eta_{L} $ and $ \eta_{R} $, each one with variances $ 2\gamma k_{B}T_{L}/m_{1} $ and $ 2\gamma k_{B}T_{R}/m_{N} $, to the equations of motion for the momenta of these particles because such a heat bath cannot be written as a Hamiltonian.
+
+The last important block to finish building our toy model are the boundary conditions, which in our case were fixed boundary conditions meaning that they can be thought of as virtual particles ("zeroth particle" and a "N+1-th particle") that are always at their equilibrium positions $ q_{0}(t)=q_{N+1}(t)=0 $ and only interacts with the first and last particles, respectively.
+
+\section{Simulations}
+
+Due to the considerations laid out on chapter 3, all simulations were made using the fourth order stochastic Runge Kutta method, taking advantaged of the fact that our model for the Langevin heat bath consist only of additive noise terms.
+
+One last consideration for the simulation is that instead of inputting all the parameters directly in the simulation, we defined some closely related ones that gives us deeper physical understanding of the system while decreasing the number of inputs. This was also done in order to more closely follow and compare our results with the work by Baowen Li, Lei Wang and Giulio Casati \cite{liThermalDiode2004}, although we make one small change.
+
+Thus to begin with we define the mean temperature between the baths as $ T_{m} = (T_{L}+T_{R})/2 $ and their difference, as a percentage of this mean temperature, is given by $ \Delta = (T_{L} - T_{R})/T_{m} $, while the ratio between the properties of the left and the right chain is $ \lambda = k_{R}/k_{L} = V_{R}/V_{L} $. We shall also consider all particles as having unit mass $ m_{n}=1 $ and in the case of the Frenkel-Kontorova potential we assume $ a_{s}=1 $, making its minima coincide with the equilibrium positions of each particle (assumed to be on the integer values of the real line).
+
+All simulations are wrote in terms of velocities, which can be gotten from the momenta equations by using $ v_{n}=p_{n}/m_{n} $, but since in our case we assume unit masses, the numerical value of the both will be the same and the equations will have the same functional forms.
+
+\subsection{The Frenkel-Kontorova model}
+
+As seen previously, the Frenkel-Kontorova model consists of adding a periodic external potential to our system, which together with our previous considerations gives us for the momenta of the particles in contact with the baths,
+\begin{align*}
+\frac{d p_{1} }{d t}&=
+-k_{L}(2q_{1}-q_{0}-q_{2}) - 2\pi V_{L}\sin\left(2\pi q_{1}\right)
+-\gamma p_{1} + 2\gamma k_{B}T_{L}\epsilon_{1}(t),\\
+\frac{d p_{N} }{d t}&=
+-k_{R}(2q_{N}-q_{N-1}-q_{N+1})-2\pi V_{R}\sin\left(2\pi q_{N}\right)
+-\gamma p_{N} + 2\gamma k_{B}T_{R} \epsilon_{2}(t),
+\end{align*}
+where $ \epsilon_{1}(t) $ and $ \epsilon_{2}(t) $ are white noises with zero mean and unit variances $ \langle \epsilon_{1}(t) \epsilon_{1}(t') \rangle = \delta(t-t')$ and $ \langle \epsilon_{2}(t)\epsilon_{2}(t') \rangle = \delta(t-t')$, while for the interphase particles between both sides of the chain we have
+\begin{align*}
+\frac{d p_{\frac{N}{2}}}{d t}&=
+-k_{L}(q_{\frac{N}{2}}-q_{\frac{N}{2}-1}) 
+-k_{\mu} \frac{\left|q_{\frac{N}{2}}-q_{\frac{N}{2}+1}\right|}
+{q_{\frac{N}{2}}-q_{\frac{N}{2}+1}}^{\mu}
+-2\pi V_{L}\sin\left(2\pi q_{\frac{N}{2}}\right),\\
+\frac{d p_{\frac{N}{2}+1} }{d t}&=
+-k_{R}(q_{\frac{N}{2}+1}-q_{\frac{N}{2}+2}) 
+-k_{\mu} \frac{\left|q_{\frac{N}{2}+1}-q_{\frac{N}{2}}\right|}
+{q_{\frac{N}{2}+1}-q_{\frac{N}{2}}}^{\mu}
+-2\pi V_{R}\sin\left(2\pi q_{\frac{N}{2}+1}\right),
+\end{align*} 
+and finally for the rest of the particles the momenta equations of motion are
+\begin{align*}
+\frac{d p_{n} }{d t}&= 
+-k_{L}(2q_{n}-q_{n-1}-q_{n+1})-2\pi V_{n}\sin\left(2\pi q_{n}\right),\\
+n&=2,3,\dots,\frac{N}{2}-1,\frac{N}{2}+2,\frac{N}{2}+3,\dots,N-1,
+\end{align*}
+where $ V_{n}=V_{L} $ for the left chain particles and $ V_{n}=V_{R} $ for the right chain particles.
+
+The equations of motion for particle's displacements from equilibrium are 
+\[ 
+\frac{dq_{n} }{dt} = p_{n}, n=1,2,\dots,N,
+\]
+and the initial conditions for the simulation were $ q_{n}(0)=p_{n}(0)=0 $.
+
+\subsubsection{FK-Fourier varying VL}
+Simulation parameters:
+\begin{itemize}
+	\item Number of samples: 100
+	\item Number of particles: 20
+	\item Time step: 0.001
+	\item Total simulation time: 300000.0
+	\item Transient time: 100000.0
+	\item Mean temperature: 0.09
+	\item Temp diff: 0.5
+	\item chain ratio $ \lambda=1.0 $,
+	\item spring constant between segments $ k_{int} = 1.0 $,
+	\item power law coefficient $ \mu=2.0 $,
+	\item amplitude of the potential on the left [varying],
+	\item chain spring constant on the left $ k_{L}=1.0 $,
+	\item drag coefficient, $ \gamma=1.0 $,
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_01}
+	\caption{Temperature along the chain varying amplitude}
+	\label{fig:ch4_01}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_02}
+	\caption{Heat current along the chain VL=1}
+	\label{fig:ch4_02}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_03}
+	\caption{Heat current along the chain VL=2}
+	\label{fig:ch4_03}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_04}
+	\caption{Heat current along the chain VL=3}
+	\label{fig:ch4_04}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_05}
+	\caption{Heat current along the chain VL=4}
+	\label{fig:ch4_05}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_06}
+	\caption{Heat current along the chain VL=5}
+	\label{fig:ch4_06}
+\end{figure}
+
+\subsubsection{FK-Fourier varying kL}
+Simulation parameters:
+\begin{itemize}
+	\item Number of samples: 100
+	\item Number of particles: 20
+	\item Time step: 0.001
+	\item Total simulation time: 300000.0
+	\item Transient time: 100000.0
+	\item Mean temperature: 0.09
+	\item Temp diff: 0.5
+	\item chain ratio $ \lambda=1.0 $,
+	\item spring constant between segments [varying],
+	\item power law coefficient $ \mu=2.0 $,
+	\item amplitude of the potential on the left $ V_{L}=5 $,
+	\item chain spring constant on the left [varying],
+	\item drag coefficient, $ \gamma=1.0 $,
+\end{itemize}
+
+The constant between segments varied to always match the chain spring constant.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_07}
+	\caption{Temperature along the chain varying kL}
+	\label{fig:ch4_07}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_08}
+	\caption{Heat along the chain kL=0.5}
+	\label{fig:ch4_08}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_09}
+	\caption{Heat along the chain kL=1.0}
+	\label{fig:ch4_09}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_10}
+	\caption{Heat along the chain kL=1.5}
+	\label{fig:ch4_10}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_11}
+	\caption{Heat along the chain kL=2.0}
+	\label{fig:ch4_11}
+\end{figure}
+
+\subsubsection{FK-diode varying dT}
+Simulation parameters:
+\begin{itemize}
+	\item Number of samples: 100
+	\item Number of particles: 20
+	\item Time step: 0.001
+	\item Total simulation time: 300000.0
+	\item Transient time: 100000.0
+	\item Mean temperature: 0.09
+	\item Temp diff: [varying]
+	\item chain ratio $ \lambda=0.2 $,
+	\item spring constant between segments $ 0.05 $,
+	\item power law coefficient $ \mu=2.0 $,
+	\item amplitude of the potential on the left $ V_{L}=5 $,
+	\item chain spring constant on the left $ 1.0 $,
+	\item drag coefficient, $ \gamma=1.0 $,
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_12}
+	\caption{Heat current for different temp difference}
+	\label{fig:ch4_12}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_13}
+	\caption{Heat current along the chain dT=0.5}
+	\label{fig:ch4_13}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_14}
+	\caption{Heat current along the chain dT=-0.5}
+	\label{fig:ch4_14}
+\end{figure}
+
+\subsection{The $ \phi^{4} $ model}
+
+In the case of the $ \phi^{4} $ model, we get for the momenta of the particles in contact with the baths
+\begin{align*}
+\frac{d p_{1} }{d t}&=
+-k_{L}(2q_{1}-q_{0}-q_{2}) - V_{L}q_{1}^{3}
+-\gamma p_{1} + 2\gamma k_{B}T_{L}\epsilon_{1}(t),\\
+\frac{d p_{N} }{d t}&=
+-k_{R}(2q_{N}-q_{N-1}-q_{N+1})-V_{R}q_{N}^{3}
+-\gamma p_{N} + 2\gamma k_{B}T_{R} \epsilon_{2}(t),
+\end{align*}
+where $ \epsilon_{1}(t) $ and $ \epsilon_{2}(t) $ are again white noises with zero mean and unit variances, for the interphase particles the equations will now be
+\begin{align*}
+\frac{d p_{\frac{N}{2}}}{d t}&=
+-k_{L}(q_{\frac{N}{2}}-q_{\frac{N}{2}-1}) 
+-k_{\mu} \frac{\left|q_{\frac{N}{2}}-q_{\frac{N}{2}+1}\right|}
+{q_{\frac{N}{2}}-q_{\frac{N}{2}+1}}^{\mu}
+-V_{L}q_{\frac{N}{2}}^{3},\\
+\frac{d p_{\frac{N}{2}+1} }{d t}&=
+-k_{R}(q_{\frac{N}{2}+1}-q_{\frac{N}{2}+2}) 
+-k_{\mu} \frac{\left|q_{\frac{N}{2}+1}-q_{\frac{N}{2}}\right|}
+{q_{\frac{N}{2}+1}-q_{\frac{N}{2}}}^{\mu}
+-V_{R}q_{\frac{N}{2}+1}^{3},
+\end{align*} 
+while the rest of the particles will have, for their momenta,
+\begin{align*}
+\frac{d p_{n} }{d t}&= 
+-k_{L}(2q_{n}-q_{n-1}-q_{n+1})-V_{n}q_{n}^{3},\\
+n&=2,3,\dots,\frac{N}{2}-1,\frac{N}{2}+2,\frac{N}{2}+3,\dots,N-1,
+\end{align*}
+where as before we have $ V_{n}=V_{L}, n=2,3,\dots,N/2-1 $ and $ V_{n}=V_{R}, n=N/2+2,N/2+3,\dots N-1 $ for the right chain particles.
+
+The particle's displacements read the exact same as before,
+\[ 
+\frac{dq_{n} }{dt} = p_{n}, n=1,2,\dots,N,
+\]
+along with the initial conditions $ q_{n}(0)=p_{n}(0)=0 $.
+
+\textbf{[Reproduction of Fourier's law]}
+
+\textbf{[Thermal diode changing Number of Particles in the chain]}
+
+\subsubsection{phi4-varying mu and dT}
+Simulation parameters:
+\begin{itemize}
+	\item Number of samples: 200
+	\item Number of particles: 4
+	\item Time step: 0.001
+	\item Total simulation time: 100000.0
+	\item Transient time: 1000.0
+	\item Mean temperature: 1.0
+	\item Temp diff: [varying]
+	\item chain ratio $ \lambda=5.0 $,
+	\item spring constant between segments $ 0.1 $,
+	\item power law coefficient [varying],
+	\item amplitude of the potential on the left $ V_{L}=1 $,
+	\item chain spring constant on the left $ 1.0 $,
+	\item drag coefficient, $ \gamma=1.0 $,
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_15}
+	\caption{capt}
+	\label{fig:ch4_15}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_16}
+	\caption{capt2}
+	\label{fig:ch4_16}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_17}
+	\caption{capt3}
+	\label{fig:ch4_17}
+\end{figure}
+
+\subsubsection{phi4-varying mu and kint}
+Simulation parameters:
+\begin{itemize}
+	\item Number of samples: 200
+	\item Number of particles: 4
+	\item Time step: 0.001
+	\item Total simulation time: 100000.0
+	\item Transient time: 1000.0
+	\item Mean temperature: 1.0
+	\item Temp diff: 1.0
+	\item chain ratio $ \lambda=5.0 $,
+	\item spring constant between segments [varying],
+	\item power law coefficient [varying],
+	\item amplitude of the potential on the left $ V_{L}=1 $,
+	\item chain spring constant on the left $ 1.0 $,
+	\item drag coefficient, $ \gamma=1.0 $,
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_18}
+	\caption{cpt}
+	\label{fig:ch4_18}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_19}
+	\caption{cpt}
+	\label{fig:ch4_19}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_20}
+	\caption{cpt}
+	\label{fig:ch4_20}
+\end{figure}
+
+\subsubsection{phi4-varying Tm}
+Simulation parameters:
+\begin{itemize}
+	\item Number of samples: 200
+	\item Number of particles: 4
+	\item Time step: 0.001
+	\item Total simulation time: 100000.0
+	\item Transient time: 1000.0
+	\item Mean temperature: [varying]
+	\item Temp diff: 1.0
+	\item chain ratio $ \lambda=5.0 $,
+	\item spring constant between segments $ 0.1 $,
+	\item power law coefficient $ 2.0 $,
+	\item amplitude of the potential on the left $ V_{L}=1 $,
+	\item chain spring constant on the left $ 1.0 $,
+	\item drag coefficient, $ \gamma=1.0 $,
+\end{itemize}
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch4_21}
+	\caption{capt}
+	\label{fig:ch4_21}
+\end{figure}

@@ -1,0 +1,155 @@
+% -*- coding: utf-8; -*-
+
+\chapter{Introduction}
+	
+
+In 2006, four researchers from the University of California at Berkeley published what was perhaps the first experimental evidence of a thermal diode, a material whose thermal conductivity along a given axis changed depending on the direction of the heat flux along it \cite{changSolidStateThermal2006}.
+
+They used an experimental apparatus consisting of two pads with platinum resistors that could operate as either a heater - through Joule effect - or as a sensor - through their resistivity variation with temperature. 
+
+Each pad was connected to each end of a nanotube which was coated inhomogeneously with Trimethyl-cyclopentadienyl platinum ($ C_{9}H_{16}Pt $) and measured the conductivity along its axis with two different configurations, the first one with the heater on the side with more mass and then with the heater on the side with less mass, effectively changing the direction of heat flow. The experiment was repeated with different materials (carbon nanotubes - CNTs - and boron nitride nanotubes - BNNTs) which had high thermal conductivity, when compared to the hydrocarbon, dominated by phononic carriers.
+
+What was surprising was that the magnitude of the heat flow changed, with the material's thermal conductivity changing as much as 7\%. After that, different groups were able to devise new ways of obtaining such asymmetric conductivity obtaining higher and higher differences \cite{kobayashiOxideThermal2009, martinez-perezRectificationElectronic2015}.
+
+Many theoretical ways of building such a device were proposed before this first experimental evidence with the first such case that we found dating as far back as 2002 by Terraneo, Peyrad and Casati \cite{terraneoControllingEnergy2002}, but to even begin to study how this phenomenon occurs a first discussion on the basics of heat conduction and of the theory of thermal conductivity in solids is needed.
+
+\section{Theory of heat conduction}
+
+Before diving into the microscopic understanding of the problem at hand, we need first to look at the basic macroscopic heat conduction problem to develop some intuition.
+
+First consider a system describing a given volume $ V \in  \mathbb{R}^{3} $ with normal vector $ \vec{n} $ pointing outside, as in figure \ref{fig:ch2_4}.
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.3\textwidth]{images/ch2_4}
+	\caption{Control volume system}
+	\label{fig:ch2_4}
+\end{figure}
+
+The first law of thermodynamics tells us that 
+\[ 
+\frac{dU }{dt } = \dot{Q} - \dot{W},
+\]
+where $ \dot{Q} $ is the rate of heat that enters my system and $ U $ is our internal energy. Assuming no external work is applied, we get a kind of continuity equation using the specific internal energy $ u $ (which is an internal energy density) and rewriting the rate of heat as the surface integral of the heat flux through our system, giving us
+\[ 
+\frac{d }{dt } \iiint_{V} u dV  
++ \iint_{\partial V} \dot{\vec{q}}\cdot \vec{n} dS = 0,
+\]
+where the change in the heat signal is due to it being antiparallel to the surface normal vector.
+
+Now assuming our system is sufficiently smooth so that we can put the derivative inside the integral and apply Gauss' theorem on the second term, together with rewriting everything using the specific heat capacity $ u=C\rho T $ gives us
+\[
+\iiint_{V} C\rho\frac{\partial T }{\partial t } + \vec{\nabla} \cdot \dot{\vec{q}}dV = 0
+\implies C\rho\frac{\partial T }{\partial t } 
++ \vec{\nabla} \cdot \dot{\vec{q}}=0.
+\]
+
+In the XIX century, the mathematician Jean-Baptiste Joseph Fourier 
+coined the law that takes his name, Fourier's law of conduction, which says that the flow of heat that appears in a material due to a temperature gradient is linear with respect to such a gradient, so mathematically we have
+\[ 
+\dot{\vec{q}} = -\kappa \vec{\nabla} T
+\]
+where $ \dot{\vec{q}} $ is the flux of heat through a given system and $ \kappa $ is the system's thermal conductivity, that is always positive. Together with the first law of thermodynamics, we have a derivation of the famous heat equation
+\[ 
+\alpha^{2} \frac{\partial T }{\partial t } - \nabla^{2} T = 0,
+\]
+where $ \alpha =  C\rho/\kappa$, which describes the dynamics of the temperature of our system with time.
+
+Let us look at a simple one dimensional case. Suppose we have a solid bar with length $ L $, cross-sectional area $ A $ and thermal conductivity $ \kappa $ in contact with two thermal baths, one on each side and with temperatures $ T_{1}, T_{2} $ such that $ T_{1}>T_{2} $.
+
+\begin{figure}[H] 
+	\centering 
+	\fontsize{18}{14} 
+	\scalebox{0.8}{\incfig{ch2_1}} 
+	\label{ch2_1} 
+	\caption{one dimensional heat transport}
+\end{figure} 
+
+
+We further assume that $ L^{2} \gg A $, the lateral surface of the bar is isolated from the environment and $ \kappa $ does not vary with temperature. In this case, Fourier's law takes the form
+\[ \dot{Q} = -\kappa \frac{d T}{d x}. \]
+
+It is expected that, as time goes to infinity, our system approaches a steady state where the heat flux $ \dot{Q} $ is constant, and as such we can use the boundary conditions $ T(x=0)=T_{1} $ and $ T(x=L)=T_{2} $ to integrate our function and get
+\[ T = - \frac{(T_{1}-T_{2})}{L}\cdot x + T_{1}, \]
+showing that the temperature profile along the bar in the steady state is linear, as in figure \ref{ch2_2}. This can also be rigorously proven from an analysis of the heat equation.
+
+\begin{figure}[H] 
+	\centering 
+	\fontsize{26}{14} 
+	\scalebox{0.6}{\incfig{ch2_2}} 
+	\label{ch2_2} 
+	\caption{linear temperature profile.}
+\end{figure} 
+
+If we replace this result back to Fourier's law we get 
+\[ 
+\frac{\dot{Q} }{\Delta T } = -\frac{\kappa }{L },
+\]
+where $ \Delta T = T_{2} - T_{1} $, showing us that the heat flow is inversely proportional to the length of our bar.
+
+The theoretical proposals for thermal diodes came as a development of many works that tried to understand what properties are needed by microscopic models to reproduce both these macroscopic heat conduction properties.
+
+\section{Thermal conductivity of solids}
+
+Most solids are composed by a regular lattice of atoms or ions that vibrates near their equilibrium positions. They can have first neighbors interactions or long range interactions, with the simplest description seen in introductory solid state physics books being a chain of atoms interacting harmonically with their first neighbors, such as depicted in figure \ref{fig:ch1_2}.
+
+\begin{figure}[htpb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/ch1_2}
+	\caption{Lattice of atoms}
+	\label{fig:ch1_2}
+\end{figure}
+
+The vibrations of this lattice have varying degrees of importance for describing the thermal conductance of solids. 
+
+Solids are classified in accordance to its electrical conductance as conductors and insulators if their electrical conductivity is high or low, respectively. Conducting solids however are usually also good thermal conductors, for their free electrons act as the main thermal energy carrier in the material. In this case, although the lattice vibrations have to be taken in account explain some phenomena, they are generally higher order corrections.
+
+Insulators, however, although they do not have such good thermal conductance for they lack electrons in free conducting bands of energy, they do conduct heat with their main carrier being these lattice vibrations. These vibrations carry energy on their normal modes, which can interact between themselves and with other systems such as X-ray electrons, as well as propagate along the crystal as wave packets.
+
+Quantum mechanically these excitations can be described as quasiparticles called phonons, permitting us to describe the heat transport of insulators by means of a kinetic theory of phonons. In this case, the phononic version of the Boltzmann equation is called Peierls-Boltzmann equation, in honor to sir Rudolf Ernst Peierls who first discovered it.
+
+He is also credited with another important discovery for this work, which is the importance of anharmonic interaction terms to the conduction of heat. In fact, perfectly harmonic crystals would have infinite thermal conductivity.
+
+The argument, which can be found in his book \textit{Quantum theory of solids}, first published in 1955, and in \cite{ashcroftSolidState1976}, goes as follows: In a perfectly harmonic crystal the distribution of phonons is always composed of stationary states and as such if we prepared them in a way that they were transporting heat, they would stay that way forever, meaning that the crystal would have infinite thermal conductivity.
+
+The Hamiltonians of a solid lattice then need to contain higher order potential energy terms
+\[ 
+	U_{anh} = \sum_{i,j,k} 
+	\frac{1 }{3! } 
+	\frac{\partial^{3} U }{\partial u_{i}\partial u_{j}\partial u_{k}}
+	\Biggr|_{\mathbf{u}=0}
+	\cdot
+	u_{i}u_{j}u_{k} 
+	+ \sum_{i,j,k,l}
+	\frac{1 }{4! } 
+	\frac{\partial^{4} U }
+	{\partial u_{i}\partial u_{j}\partial u_{k} \partial u_{l}}
+	\Biggr|_{\mathbf{u}=0}
+	\cdot u_{i}u_{j}u_{k}u_{l},
+\]
+
+to be able to describe the dynamics of heat flowing through a solid. These corrections give rise to umklapp processes, which are phonon-phonon interactions that do not conserve the total crystal momentum, giving rise to some thermal resistance in the material.
+
+Problems with the harmonic model have also been shown from the point of view of classical statistical mechanics by Rieder, Lebowitz and Elliot Lieb in \cite{riederPropertiesHarmonic1967}, where they solved exactly the problem of a harmonic chain of particles in contact with two heat baths at different temperatures using a generalized Liouville equation.
+
+They showed that the chain shows a heat current proportional only to the temperature difference between both heat baths $ J\propto (T_{2}-T_{1}) $, instead of the temperature gradient we saw in section 1.1, and that the kinetic temperature, defined as $ \langle p_{n} \rangle $ where $ p_{n} $ is the momentum from the n-th particle, is uniform along the chain with value $ 0.5\cdot(T_{2}-T_{1}) $, instead of the linear temperature profile we would expect from Fourier's law.
+
+After their work, many others followed suit to understand if anharmonicity was enough to reproduce the results from heat conduction or if other properties are needed, such as non conservation of momentum. 
+
+We can cite many models that were able to reproduce these results, such as the ding-a-ling model, the ding-dong model, the Frenkel-Kontorova model and the $ \phi^{4} $ model. Others, like the Fermi-Pasta-Ulam-Tsingou only approximately shows the wanted properties.
+
+All these works culminated in the proposal of thermal rectification using an asymmetric chain of particles.
+
+\section{Thermal diode}
+
+In 2002, Terraneo, Peyrad and Casati \cite{terraneoControllingEnergy2002} published a paper on low dimensional heat conduction using harmonic interactions between the particles and a Morse external potential $ V(x) = D(\exp(-\alpha x)-1)^2, $ and showed that when $ D $ varies along the chain we could theoretically have a thermal rectifier.
+
+The rationale presented was that changing this parameter, the phonon bands in different parts of the chain stop overlapping impeding the phonons to travel along. 
+
+Following this work, Baowen Li, Lei Wang and Casati showed in 2004  \cite{liThermalDiode2004} such a heat current rectifying mechanism in a 1D nonlinear lattice with a Frenkel-Kontorova external potential $ A\cos(2\pi x_{i}) $ and an harmonic interaction by choosing different parameters for the left and right segments of the lattice.
+
+Like we stated previously, then came the experimental confirmation of a thermal diode in 2006 \cite{changSolidStateThermal2006}, albeit with a really small efficiency. Many other papers followed suit with new ways of achieving this asymmetrical thermal conductivity, striving to achieve higher and higher efficiencies, with a work in 2015 by Martínez-Pérez,Fornieri and Giazotto, from Italy, showing a heat current in one direction two orders of magnitude higher than the heat current in the opposite direction when combining normal metals with superconductors \cite{martinez-perezRectificationElectronic2015}.
+
+Such devices could be very interesting from an applied point of view due to their potential uses in nanoscale thermal transport, for example in solar cells for energy harvesting, although it could also be used for radiation detection or in the field of quantum information \cite{martinez-perezRectificationElectronic2015}, and the control of phonons is already a field of its own called phononics where they can be used as information carriers \cite{liPhononicsManipulating2012}, in stark contrast with their view nowadays as wasted energy.
+
+The study of thermal transport in low dimensions still have many lingering questions being explored \cite{olivaresRoleRange2016}, and in this work we shall look at the effects of power law potentials on thermal diodes.
