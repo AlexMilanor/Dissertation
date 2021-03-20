@@ -115,6 +115,7 @@ int main(int argc, char *argv[]){
 
     for (int n=1 ; n <= number_of_samples; n++) {
 
+        printf("Simulação %d \n",n);
         /*
         =================== Initialize velocity and position ==================
         */
