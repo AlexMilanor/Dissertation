@@ -1,24 +1,24 @@
 --- System ---
 Number_of_Samples : 1
-Number_of_Particles_in_the_chain : 10
-Potential : 0
+Number_of_Particles_in_the_chain : 20
+Potential : 2
 
 --- Simulation ---
-Time_step : 0.001
-Total_Simulation_Time : 400000.0
-Transient_Time : 200000.0
+Time_step : 0.00001
+Total_Simulation_Time : 1000000.0
+Transient_Time : 1000.0
 
 --- Physics ---
-Mean_Temperature : 0.07
-Temperature_Difference_(%) : 1.0
-Left_to_Right_Ratio : 1.0
-Interphase_Spring_Constant : 1.0
+Mean_Temperature : 0.09
+Temperature_Difference_(%) : 0.05
+Left_to_Right_Ratio : 0.2
+Interphase_Spring_Constant : 0.05
 Interphase_Polynomial_Power : 2.0
-Left_Potential_Amplitude : 1.0
+Left_Potential_Amplitude : 39.478417604357432
 Left_Spring_Constant : 1.0 
 Drag_Coefficient : 1.0
 
 --- Files ---
-Data_Directory : data/diode_20200716/
+Data_Directory : data/testing/
 Output_filename : thermal_diode_
 Output_extension : .csv

@@ -9,9 +9,6 @@ text/*.out
 text/*.synctex.gz
 text/*.toc
 
-# Removing the compiled text
-text/*.pdf
-
 # Removing inkscape images auxiliary files
 text/images/*.pdf
 text/images/*.sh
