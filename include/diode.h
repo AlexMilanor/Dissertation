@@ -43,7 +43,7 @@ cosine_potential(double x, double V)
 {
     /* Force due to a cosine potential */
     double a0=1.0; // external potential length
-    return -(V*2.0*M_PI)*sin(2.0*M_PI*x);
+    return -V*sin(2.0*M_PI*x);
 }
 
 
@@ -279,16 +279,17 @@ write_vector_to_row(char *name, double *vector, int length, FILE *write_file)
 
 
 int 
-diode_srk4(char *filename, char *potential_name, 
+diode_srk4(char *filename, char *filename_vars, char *potential_name, 
            double *x0, double *v0, int N_C, double gama, 
            double *V, double mu, double tau, double tempo, double TransientTime, 
            double *A, double *k, unsigned int *semente)
 {
 
     /*
-    Maind code for running the 4th order Stochastic Runge Kutta (SRK4).
+    Main code for running the 4th order Stochastic Runge Kutta (SRK4).
     ----------------------------------------
     char *filename: filename of the file
+    char *filename_vars: filename of the file with dynamic variables
     double *x0: initial conditions for position
     double *v0: initial conditions for velocity
     int N_C: number of particles in the chain
@@ -306,18 +307,24 @@ diode_srk4(char *filename, char *potential_name,
     /* Main code for the SRK4 in the harmonic chain */
 
     /* Defining output files */
-    FILE *file; // Declaring file
+    FILE *file; // Declaring file for summaries
+    FILE *file_vars; // Declaring file for variables
+
     file = fopen(filename, "w"); // Creating csv files
+    file_vars = fopen(filename_vars, "w"); // Creating csv files 
 
     /* Creating column headers */
     fprintf(file, "index");
+    fprintf(file_vars, "t");
     
     for(int i=0;i<N_C;i++)
     {
         fprintf(file, ",%d",i+1);
+        fprintf(file_vars, ",x%d,v%d", i+1, i+1);
     }
     
     fprintf(file, "\n");
+    fprintf(file_vars, "\n");
 
 
     /* Defining the external potential */
@@ -347,7 +354,7 @@ diode_srk4(char *filename, char *potential_name,
 
     /* Saving initial Conditions*/
     fprintf(file, "x_t_0");
-    
+
     for(int i=0;i<N_C;i++)
     {
         x[i][0]=x0[i];
@@ -365,6 +372,13 @@ diode_srk4(char *filename, char *potential_name,
     }
     
     fprintf(file, "\n");
+
+    fprintf(file_vars, "0.0");
+    for(int i=0;i<N_C;i++)
+    {
+        fprintf(file_vars, ",%.8g,%.8g", x[i][0], v[i][0]);
+    }
+    fprintf(file_vars, "\n");
 
 
     /* Vector of outputs */
@@ -517,9 +531,18 @@ diode_srk4(char *filename, char *potential_name,
         // We save the results after the transient time
         if (t>transient_point-1)
         {
+
+            // Saving time to file_vars
+            fprintf(file_vars, "%.8g", (double)(t*tau));
+
+
             for (int i=0;i<N_C;i++)
             {
 
+                // Saving variables to file_vars
+                fprintf(file_vars, ",%.8g,%.8g", x[i][4], v[i][4]);
+
+                // Calculating thermodynamic variables
                 Temp[i] = pow(v[i][0],2.0);
 
                 if (i == 0)
@@ -600,8 +623,11 @@ diode_srk4(char *filename, char *potential_name,
 
     /* Cleaning memory */
     fclose(file); // Closing files
+    fclose(file_vars); //Closing files
     gsl_rng_free(re); // Closing left RNG
     gsl_rng_free(rd); // Closing right RNG
+
+
 
     return 0;
 }

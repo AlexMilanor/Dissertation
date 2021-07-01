@@ -40,7 +40,7 @@ int valid_input(int arg_count, char *arg_values[]){
         return 0;
     }
     else {
-        char input_filename[100];
+        char input_filename[200];
         strcpy(input_filename, arg_values[1]);
         
         char *extension = get_filename_extension(input_filename);

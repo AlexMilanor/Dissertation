@@ -36,7 +36,7 @@ int main(int argc, char *argv[]){
         return 0;
     }
 
-    char input_filename[100];
+    char input_filename[200];
     strcpy(input_filename, argv[1]);
 
     int values_system[2];
@@ -101,7 +101,7 @@ int main(int argc, char *argv[]){
 
 
     /* Heat Baths */
-    const double drag_coefficient= values_physics[7];
+    const double drag_coefficient = values_physics[7];
     const double left_temp  = temp_mean*(1.0+0.5*temp_diff); // Reduced temperature in the left bath (1/(m*beta))
     const double right_temp = temp_mean*(1.0-0.5*temp_diff); // Reduced temperature in the right bath (1/(m*beta))
     const double left_amp  = 2.0*drag_coefficient*left_temp; // Noise amplitude in the left bath
@@ -130,25 +130,34 @@ int main(int argc, char *argv[]){
         
         /* ==================== Simulation control variables ========================= */
         /* Defining output filename */        
-        char data_dir[100]; // Name of directory
+        char data_dir[200]; // Name of directory
         strcpy(data_dir, values_files[0]);
 
-        char plot_filename[100]; // Name of file
+        char plot_filename[200]; // Name of file
         strcpy(plot_filename, values_files[1]);
 
-        char sim_number[10]; // Number of simulation
+        char sim_number[20]; // Number of simulation
         sprintf(sim_number, "%d", n);
 
-        char output_extension[100]; // File extension
+        char output_extension[200]; // File extension
         strcpy(output_extension,values_files[2]);
 
 
-        char archname[100]; // Final name
+        char archname[300]; // Final name
 
         strcpy(archname, data_dir);
         strcat(archname, plot_filename);
         strcat(archname, sim_number);
         strcat(archname, output_extension);
+
+        char archname_dyn[300]; // Variables with time
+
+        strcpy(archname_dyn, data_dir);
+        strcat(archname_dyn, plot_filename);
+        strcat(archname_dyn, "_vars_");
+        strcat(archname_dyn, sim_number);
+        strcat(archname_dyn, output_extension);
+
 
         /* ====================== Running Simulations =========================== */
         /* Declaring RNG seeds */
@@ -157,9 +166,10 @@ int main(int argc, char *argv[]){
         semente[1] = (2*n);
         
         diode_srk4(archname,
+                   archname_dyn, 
                    potential_name,
                    x_0, v_0, number_of_particles, 
-                   drag_coefficient, 
+                   drag_coefficient,
                    Ext_Potential_Amp, 
                    poly_power, 
                    timeStep, 
