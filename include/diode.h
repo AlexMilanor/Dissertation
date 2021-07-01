@@ -591,6 +591,9 @@ diode_srk4(char *filename, char *filename_vars, char *potential_name,
 
             }
 
+            // Next line
+            fprintf(file_vars, "\n");
+
         }
     }
 
