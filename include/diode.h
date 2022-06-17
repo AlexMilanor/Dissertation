@@ -7,7 +7,7 @@ Used specifically for Harmonic Chain
 The baths are of Langevin type.
 
 Author: Alexandre A. A. Almeida
-Date: 05/06/2019
+Creation Date: 05/06/2019
 
 */
 
@@ -38,12 +38,20 @@ no_potential(double x, double A)
 }
 
 
+double
+harm_potential(double x, double V){
+
+    /* Force due to a harmonic potential */
+    return -V * x;
+}
+
+
 double 
 cosine_potential(double x, double V)
 {
     /* Force due to a cosine potential */
     double a0=1.0; // external potential length
-    return -V*sin(2.0*M_PI*x);
+    return -V * sin(2.0 * M_PI * x);
 }
 
 
@@ -51,7 +59,7 @@ double
 phi_4_potential(double x, double k)
 {
     /* Force due to a quartic (phi4) potential */
-    return -k*pow(x,3);
+    return -k * pow(x,3);
 }
 
 
@@ -68,6 +76,10 @@ assign_potential(char *potential_name)
 
     if (strcmp(potential_name,"none")==0){
         functionPtr = no_potential;
+    }
+
+    else if (strcmp(potential_name,"harm")==0){
+        functionPtr = harm_potential;
     }
 
     else if (strcmp(potential_name,"cosine")==0){
@@ -210,9 +222,12 @@ update_mean(double prev_mean, double point, double n_th)
     "Algorithms for Computing the Sample Variance: Analysis and Recommendations", Chan et al., 1983
     */
     double new_mean;
-    // new_mean = prev_mean + (1.0/n_th)*(point-prev_mean);
-    new_mean = prev_mean + point;
+    new_mean = prev_mean + (1.0/n_th)*(point-prev_mean);
     return new_mean;
+
+    // double new_mean;
+    // new_mean = prev_mean + point;
+    // return new_mean;
 }
 
 
@@ -254,7 +269,7 @@ int
 transform_variance_in_std_dev(double *var_vector, int length)
 {
     /*
-    Transform the variance into the standar deviation 
+    Transform the variance into the standard deviation 
     */
     take_sqrt_of_vector(var_vector, length);
 }
@@ -308,23 +323,23 @@ diode_srk4(char *filename, char *filename_vars, char *potential_name,
 
     /* Defining output files */
     FILE *file; // Declaring file for summaries
-    FILE *file_vars; // Declaring file for variables
+    // FILE *file_vars; // Declaring file for variables
 
     file = fopen(filename, "w"); // Creating csv files
-    file_vars = fopen(filename_vars, "w"); // Creating csv files 
+    // file_vars = fopen(filename_vars, "w"); // Creating csv files 
 
     /* Creating column headers */
     fprintf(file, "index");
-    fprintf(file_vars, "t");
+    // fprintf(file_vars, "t");
     
     for(int i=0;i<N_C;i++)
     {
         fprintf(file, ",%d",i+1);
-        fprintf(file_vars, ",x%d,v%d", i+1, i+1);
+        // fprintf(file_vars, ",x%d,v%d", i+1, i+1);
     }
     
     fprintf(file, "\n");
-    fprintf(file_vars, "\n");
+    // fprintf(file_vars, "\n");
 
 
     /* Defining the external potential */
@@ -373,12 +388,12 @@ diode_srk4(char *filename, char *filename_vars, char *potential_name,
     
     fprintf(file, "\n");
 
-    fprintf(file_vars, "0.0");
-    for(int i=0;i<N_C;i++)
-    {
-        fprintf(file_vars, ",%.8g,%.8g", x[i][0], v[i][0]);
-    }
-    fprintf(file_vars, "\n");
+    // fprintf(file_vars, "0.0");
+    // for(int i=0;i<N_C;i++)
+    // {
+    //     fprintf(file_vars, ",%.8g,%.8g", x[i][0], v[i][0]);
+    // }
+    // fprintf(file_vars, "\n");
 
 
     /* Vector of outputs */
@@ -532,15 +547,15 @@ diode_srk4(char *filename, char *filename_vars, char *potential_name,
         if (t>transient_point-1)
         {
 
-            // Saving time to file_vars
-            fprintf(file_vars, "%.8g", (double)(t*tau));
+            // // Saving time to file_vars
+            // fprintf(file_vars, "%.8g", (double)(t*tau));
 
 
             for (int i=0;i<N_C;i++)
             {
 
-                // Saving variables to file_vars
-                fprintf(file_vars, ",%.8g,%.8g", x[i][4], v[i][4]);
+                // // Saving variables to file_vars
+                // fprintf(file_vars, ",%.8g,%.8g", x[i][4], v[i][4]);
 
                 // Calculating thermodynamic variables
                 Temp[i] = pow(v[i][0],2.0);
@@ -578,30 +593,30 @@ diode_srk4(char *filename, char *filename_vars, char *potential_name,
                 }
                 else 
                 {
-                    x_std[i] = update_variance(x_std[i], x_mean[i], x[i][4], (double)t);
-                    v_std[i] = update_variance(v_std[i], v_mean[i], v[i][4], (double)t);
-                    T_std[i] = update_variance(T_std[i], T_mean[i], Temp[i], (double)t);
-                    J_std[i] = update_variance(J_std[i], J_mean[i], J_flux[i], (double)t);
+                    x_std[i] = update_variance(x_std[i], x_mean[i], x[i][4], (double)(t-transient_point));
+                    v_std[i] = update_variance(v_std[i], v_mean[i], v[i][4], (double)(t-transient_point));
+                    T_std[i] = update_variance(T_std[i], T_mean[i], Temp[i], (double)(t-transient_point));
+                    J_std[i] = update_variance(J_std[i], J_mean[i], J_flux[i], (double)(t-transient_point));
 
-                    x_mean[i] = update_mean(x_mean[i],x[i][4],(double)t);
-                    v_mean[i] = update_mean(v_mean[i],v[i][4],(double)t);
-                    T_mean[i] = update_mean(T_mean[i],Temp[i],(double)t);
-                    J_mean[i] = update_mean(J_mean[i],J_flux[i],(double)t);
+                    x_mean[i] = update_mean(x_mean[i],x[i][4],(double)(t-transient_point));
+                    v_mean[i] = update_mean(v_mean[i],v[i][4],(double)(t-transient_point));
+                    T_mean[i] = update_mean(T_mean[i],Temp[i],(double)(t-transient_point));
+                    J_mean[i] = update_mean(J_mean[i],J_flux[i],(double)(t-transient_point));
                 }
 
             }
 
             // Next line
-            fprintf(file_vars, "\n");
+            // fprintf(file_vars, "\n");
 
         }
     }
 
     // Now we save the simulation results
-    divide_vector_by_value(x_mean, N_C, time_points - transient_point);
-    divide_vector_by_value(v_mean, N_C, time_points - transient_point);
-    divide_vector_by_value(T_mean, N_C, time_points - transient_point);
-    divide_vector_by_value(J_mean, N_C, time_points - transient_point);
+    // divide_vector_by_value(x_mean, N_C, time_points - transient_point);
+    // divide_vector_by_value(v_mean, N_C, time_points - transient_point);
+    // divide_vector_by_value(T_mean, N_C, time_points - transient_point);
+    // divide_vector_by_value(J_mean, N_C, time_points - transient_point);
 
     write_vector_to_row("x_mean", x_mean, N_C, file);
     write_vector_to_row("v_mean", v_mean, N_C, file);
@@ -626,7 +641,7 @@ diode_srk4(char *filename, char *filename_vars, char *potential_name,
 
     /* Cleaning memory */
     fclose(file); // Closing files
-    fclose(file_vars); //Closing files
+    // fclose(file_vars); //Closing files
     gsl_rng_free(re); // Closing left RNG
     gsl_rng_free(rd); // Closing right RNG
 

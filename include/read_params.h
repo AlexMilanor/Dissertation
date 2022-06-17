@@ -88,6 +88,9 @@ int get_potential(char *potential_name, int potential){
     else if (potential==2){
         strcpy(potential_name,"phi4");
     }
+    else if (potential==3){
+        strcpy(potential_name,"harm");
+    }
     else {
         strcpy(potential_name,"none");
     }

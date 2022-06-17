@@ -89,7 +89,7 @@ int main(int argc, char *argv[]){
 
 
     /* External Potential */
-    const double left_ext_potential_amp = values_physics[5]*0.25*M_1_PI*M_1_PI; // Normalize dividing by (2\pi)^2
+    const double left_ext_potential_amp = values_physics[5]; // do NOT normalize potential amplitude!
     const double right_ext_potential_amp = chains_ratio*left_ext_potential_amp; 
     double Ext_Potential_Amp[2] = {left_ext_potential_amp, right_ext_potential_amp};
 
